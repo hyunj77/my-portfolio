@@ -21,7 +21,7 @@ import { supabase } from '../lib/supabase.js'
 
 const EMOJIS = ['👋', '😊', '🔥', '💪', '✨', '🚀', '🌟', '💡']
 const MESSAGE_LIMIT = 500
-const ACCENTS = ['#cdb4f0', '#9575cd', '#b39ddb', '#7e57c2']
+const ACCENTS = ['#8fa6ff', '#3d5afe', '#6b85ff', '#1b2a56']
 
 function formatDate(iso) {
   const d = new Date(iso)
@@ -101,7 +101,7 @@ function GuestbookSection() {
           <Chip
             label="Contact"
             size="small"
-            sx={{ mb: 1.5, fontWeight: 700, bgcolor: 'rgba(149,117,205,0.15)', color: 'primary.dark' }}
+            sx={{ mb: 1.5, fontWeight: 700, bgcolor: 'rgba(61,90,254,0.15)', color: 'primary.dark' }}
           />
           <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
             여기까지 와주셔서 반가워요 🌱

@@ -26,7 +26,7 @@ function TechBadges({ techStack }) {
           key={tech}
           label={tech}
           size="small"
-          sx={{ bgcolor: 'rgba(149,117,205,0.12)', color: 'primary.dark', fontWeight: 600 }}
+          sx={{ bgcolor: 'rgba(61,90,254,0.12)', color: 'primary.dark', fontWeight: 600 }}
         />
       ))}
     </Stack>
