@@ -107,7 +107,7 @@ function GuestbookSection() {
             여기까지 와주셔서 반가워요 🌱
           </Typography>
           <Typography sx={{ mt: 1, color: 'text.secondary' }}>
-            짧은 인사든 긴 이야기든, 방명록에 편하게 흔적을 남겨주세요.
+            새로운 인연과 프로젝트를 기다립니다. 방명록에 흔적을 남겨주세요!
           </Typography>
         </Box>
 
