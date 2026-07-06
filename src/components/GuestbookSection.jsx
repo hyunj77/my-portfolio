@@ -113,7 +113,7 @@ function GuestbookSection() {
         position: 'relative',
         overflow: 'hidden',
         py: { xs: 6, md: 9 },
-        bgcolor: 'primary.light',
+        bgcolor: '#eef1fb',
         scrollMarginTop: 72,
       }}
     >
@@ -266,7 +266,11 @@ function GuestbookSection() {
         >
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
             <Typography variant="h6">방명록</Typography>
-            <Chip label={`${entries.length}개`} size="small" sx={{ bgcolor: 'primary.light', color: 'primary.dark' }} />
+            <Chip
+              label={`${entries.length}개`}
+              size="small"
+              sx={{ bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
+            />
           </Stack>
           <Button variant="contained" startIcon={<EditIcon />} onClick={() => setFormOpen(true)}>
             방명록 남기기
