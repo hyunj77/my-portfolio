@@ -26,9 +26,9 @@ function AboutMeSection() {
   )
 
   return (
-    <Box id="home-about-me" component="section" sx={{ py: { xs: 6, md: 9 }, scrollMarginTop: 72, bgcolor: '#7C83FF' }}>
+    <Box id="home-about-me" component="section" sx={{ py: { xs: 6, md: 9 }, scrollMarginTop: 72, bgcolor: 'primary.main' }}>
       <Container maxWidth="md">
-        <SectionHeader title="About Me" />
+        <SectionHeader title="About Me" light />
 
         <Grid container spacing={3} sx={{ mt: 2 }}>
           <Grid size={{ xs: 12, md: 7 }}>
@@ -96,8 +96,12 @@ function AboutMeSection() {
             component={RouterLink}
             to="/about"
             variant="outlined"
-            color="primary"
             aria-label="About Me 탭에서 더 알아보기"
+            sx={{
+              color: '#fff',
+              borderColor: 'rgba(255,255,255,0.7)',
+              '&:hover': { borderColor: '#fff', bgcolor: 'rgba(255,255,255,0.12)' },
+            }}
           >
             더 알아보기
           </Button>

@@ -70,7 +70,7 @@ const CIRCUIT_BACKGROUND = `url("data:image/svg+xml,${encodeURIComponent(CIRCUIT
 
 function HeroSection() {
   const { aboutMeData, homeData } = usePortfolio()
-  const { name, experience } = aboutMeData.basicInfo
+  const { name } = aboutMeData.basicInfo
   const orbitSkills = homeData.skills.slice(0, 4)
 
   const scrollToAboutMe = () => {
@@ -129,7 +129,7 @@ function HeroSection() {
           <Grid size={{ xs: 12, md: 7 }}>
             <Stack spacing={2.5} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
               <Chip
-                label={`${name} · ${experience}`}
+                label={name}
                 size="small"
                 sx={{
                   fontWeight: 700,

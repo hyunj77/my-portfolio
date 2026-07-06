@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-function SectionHeader({ title }) {
+function SectionHeader({ title, light = false }) {
   return (
     <Box sx={{ textAlign: 'center', mb: 1 }}>
       <Typography
@@ -11,6 +11,7 @@ function SectionHeader({ title }) {
           fontSize: '1.6rem',
           position: 'relative',
           pb: 1,
+          color: light ? '#fff' : 'text.primary',
           '&::after': {
             content: '""',
             position: 'absolute',
@@ -19,7 +20,7 @@ function SectionHeader({ title }) {
             bottom: 0,
             height: 4,
             borderRadius: 2,
-            bgcolor: 'primary.light',
+            bgcolor: light ? 'rgba(255,255,255,0.7)' : 'primary.light',
           },
         }}
       >
