@@ -77,6 +77,10 @@ function HeroSection() {
     document.getElementById('home-about-me')?.scrollIntoView({ behavior: 'smooth' })
   }
 
+  const scrollToContact = () => {
+    document.getElementById('home-contact')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <Box
       component="section"
@@ -206,8 +210,7 @@ function HeroSection() {
                   프로젝트 보기
                 </Button>
                 <Button
-                  component={RouterLink}
-                  to="/about"
+                  onClick={scrollToContact}
                   variant="outlined"
                   color="primary"
                   size="large"
@@ -216,7 +219,7 @@ function HeroSection() {
                     '&:hover': { transform: 'translateY(-3px)', boxShadow: 3 },
                   }}
                 >
-                  About Me
+                  연락하기
                 </Button>
               </Stack>
             </Stack>

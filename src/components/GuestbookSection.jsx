@@ -95,7 +95,7 @@ function GuestbookSection() {
   }
 
   return (
-    <Box component="section" sx={{ py: { xs: 6, md: 9 }, bgcolor: 'background.paper' }}>
+    <Box id="home-contact" component="section" sx={{ py: { xs: 6, md: 9 }, bgcolor: 'background.paper', scrollMarginTop: 72 }}>
       <Container maxWidth="md">
         <Box sx={{ textAlign: 'center' }}>
           <Chip
