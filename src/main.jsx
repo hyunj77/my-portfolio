@@ -6,16 +6,19 @@ import { HashRouter } from 'react-router-dom'
 import theme from './theme.js'
 import App from './App.jsx'
 import { PortfolioProvider } from './context/PortfolioContext.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <HashRouter>
-        <PortfolioProvider>
-          <App />
-        </PortfolioProvider>
-      </HashRouter>
+      <ErrorBoundary>
+        <HashRouter>
+          <PortfolioProvider>
+            <App />
+          </PortfolioProvider>
+        </HashRouter>
+      </ErrorBoundary>
     </ThemeProvider>
   </StrictMode>,
 )

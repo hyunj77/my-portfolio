@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 import { alpha } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Chip from '@mui/material/Chip'
 import Grid from '@mui/material/Grid'
+import Grow from '@mui/material/Grow'
 import LinearProgress from '@mui/material/LinearProgress'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
@@ -17,7 +18,7 @@ import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
 import { availableSkillsCatalog, categoryColors, categoryOrder } from '../data/skillsData.js'
 
-function AnimatedLevelBar({ level, color }) {
+const AnimatedLevelBar = memo(function AnimatedLevelBar({ level, color }) {
   const [value, setValue] = useState(0)
 
   useEffect(() => {
@@ -42,9 +43,9 @@ function AnimatedLevelBar({ level, color }) {
       }}
     />
   )
-}
+})
 
-function SkillCard({ skill, editable, onLevelChange }) {
+const SkillCard = memo(function SkillCard({ skill, editable, onLevelChange }) {
   const color = categoryColors[skill.category] ?? '#3d5afe'
 
   return (
@@ -92,6 +93,7 @@ function SkillCard({ skill, editable, onLevelChange }) {
                 value={skill.level}
                 onChange={(event, value) => onLevelChange(skill.id, value)}
                 valueLabelDisplay="auto"
+                aria-label={`${skill.name} 숙련도`}
                 sx={{ color }}
               />
             </Box>
@@ -107,7 +109,7 @@ function SkillCard({ skill, editable, onLevelChange }) {
       </Card>
     </Tooltip>
   )
-}
+})
 
 function SkillsSection({ editable = false }) {
   const { aboutMeData, updateSkillLevel, addSkill } = usePortfolio()
@@ -133,16 +135,22 @@ function SkillsSection({ editable = false }) {
     return availableSkillsCatalog.filter((skill) => !existingNames.has(skill.name))
   }, [skills])
 
-  const handleAddSkill = (catalogSkill) => {
-    addSkill({
-      icon: catalogSkill.icon,
-      name: catalogSkill.name,
-      level: 50,
-      category: catalogSkill.category,
-      description: catalogSkill.description,
-    })
-    setAnchorEl(null)
-  }
+  const handleOpenMenu = useCallback((event) => setAnchorEl(event.currentTarget), [])
+  const handleCloseMenu = useCallback(() => setAnchorEl(null), [])
+
+  const handleAddSkill = useCallback(
+    (catalogSkill) => {
+      addSkill({
+        icon: catalogSkill.icon,
+        name: catalogSkill.name,
+        level: 50,
+        category: catalogSkill.category,
+        description: catalogSkill.description,
+      })
+      setAnchorEl(null)
+    },
+    [addSkill],
+  )
 
   return (
     <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
@@ -166,7 +174,11 @@ function SkillsSection({ editable = false }) {
               <Grid container spacing={2.5}>
                 {items.map((skill) => (
                   <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                    <SkillCard skill={skill} editable={editable} onLevelChange={updateSkillLevel} />
+                    <Grow in timeout={400}>
+                      <Box sx={{ height: '100%' }}>
+                        <SkillCard skill={skill} editable={editable} onLevelChange={updateSkillLevel} />
+                      </Box>
+                    </Grow>
                   </Grid>
                 ))}
               </Grid>
@@ -181,11 +193,11 @@ function SkillsSection({ editable = false }) {
               color="primary"
               startIcon={<AddIcon />}
               disabled={addableSkills.length === 0}
-              onClick={(event) => setAnchorEl(event.currentTarget)}
+              onClick={handleOpenMenu}
             >
               {addableSkills.length === 0 ? '모든 스킬 추가 완료' : '스킬 추가'}
             </Button>
-            <Menu anchorEl={anchorEl} open={menuOpen} onClose={() => setAnchorEl(null)}>
+            <Menu anchorEl={anchorEl} open={menuOpen} onClose={handleCloseMenu}>
               {addableSkills.map((catalogSkill) => (
                 <MenuItem key={catalogSkill.name} onClick={() => handleAddSkill(catalogSkill)}>
                   <SkillIcon icon={catalogSkill.icon} color={categoryColors[catalogSkill.category] ?? '#3d5afe'} />
@@ -200,4 +212,4 @@ function SkillsSection({ editable = false }) {
   )
 }
 
-export default SkillsSection
+export default memo(SkillsSection)

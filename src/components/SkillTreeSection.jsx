@@ -47,7 +47,13 @@ function SkillTreeSection() {
           })}
         </Stack>
         <Box sx={{ textAlign: 'center', mt: 4 }}>
-          <Button component={RouterLink} to="/about" variant="outlined" color="primary">
+          <Button
+            component={RouterLink}
+            to="/about"
+            variant="outlined"
+            color="primary"
+            aria-label="About Me 탭에서 전체 스킬 보기"
+          >
             전체 스킬 보기
           </Button>
         </Box>

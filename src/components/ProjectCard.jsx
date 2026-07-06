@@ -45,6 +45,8 @@ function ProjectCard({ project }) {
           component="img"
           image={thumbnailUrl}
           alt={`${title} 메인 화면`}
+          loading="lazy"
+          decoding="async"
           sx={{ aspectRatio: '1 / 1', objectFit: 'cover', objectPosition: 'top', bgcolor: 'primary.light' }}
         />
       </CardActionArea>

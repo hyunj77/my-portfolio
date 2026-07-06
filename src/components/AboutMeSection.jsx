@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { alpha } from '@mui/material/styles'
 import Avatar from '@mui/material/Avatar'
@@ -19,7 +20,10 @@ import { categoryColors } from '../data/skillsData.js'
 function AboutMeSection() {
   const { homeData } = usePortfolio()
   const { basicInfo, content, skills } = homeData
-  const mainContent = content.find((section) => section.id === 'dev-story') ?? content[0]
+  const mainContent = useMemo(
+    () => content.find((section) => section.id === 'dev-story') ?? content[0],
+    [content],
+  )
 
   return (
     <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
@@ -43,8 +47,12 @@ function AboutMeSection() {
           <Grid size={{ xs: 12, md: 5 }}>
             <Card variant="outlined" sx={{ height: '100%', bgcolor: 'background.paper' }}>
               <CardContent sx={{ p: { xs: 3, md: 4 }, textAlign: 'center' }}>
-                <Avatar sx={{ width: 72, height: 72, mx: 'auto', mb: 1.5, bgcolor: 'primary.light' }}>
-                  <PersonIcon sx={{ fontSize: '2.25rem', color: 'primary.dark' }} />
+                <Avatar
+                  role="img"
+                  aria-label="프로필 사진"
+                  sx={{ width: 72, height: 72, mx: 'auto', mb: 1.5, bgcolor: 'primary.light' }}
+                >
+                  <PersonIcon sx={{ fontSize: '2.25rem', color: 'primary.dark' }} aria-hidden="true" />
                 </Avatar>
                 <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>{basicInfo.name}</Typography>
                 <Chip label={basicInfo.experience} size="small" color="primary" variant="outlined" sx={{ mt: 1 }} />
@@ -84,7 +92,13 @@ function AboutMeSection() {
         </Card>
 
         <Box sx={{ textAlign: 'center', mt: 3 }}>
-          <Button component={RouterLink} to="/about" variant="outlined" color="primary">
+          <Button
+            component={RouterLink}
+            to="/about"
+            variant="outlined"
+            color="primary"
+            aria-label="About Me 탭에서 더 알아보기"
+          >
             더 알아보기
           </Button>
         </Box>

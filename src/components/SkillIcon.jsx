@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import HtmlIcon from '@mui/icons-material/Html'
 import CssIcon from '@mui/icons-material/Css'
 import JavascriptIcon from '@mui/icons-material/Javascript'
@@ -37,7 +38,7 @@ export const SKILL_ICON_MAP = {
 
 function SkillIcon({ icon, color, sx }) {
   const IconComponent = SKILL_ICON_MAP[icon] ?? ExtensionIcon
-  return <IconComponent sx={{ color, fontSize: 28, ...sx }} />
+  return <IconComponent aria-hidden="true" sx={{ color, fontSize: 28, ...sx }} />
 }
 
-export default SkillIcon
+export default memo(SkillIcon)
