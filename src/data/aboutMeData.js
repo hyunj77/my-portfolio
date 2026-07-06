@@ -4,7 +4,7 @@ export const initialAboutMeData = {
     education: '',
     major: '',
     experience: '신입',
-    photo: '👩',
+    photo: 'person',
   },
   sections: [
     {

@@ -4,21 +4,26 @@ import AccordionDetails from '@mui/material/AccordionDetails'
 import AccordionSummary from '@mui/material/AccordionSummary'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import EditIcon from '@mui/icons-material/Edit'
+import PersonIcon from '@mui/icons-material/Person'
 import SectionHeader from '../components/SectionHeader.jsx'
 import SkillsSection from '../components/SkillsSection.jsx'
-import { initialAboutMeData } from '../data/aboutMeData.js'
+import { usePortfolio } from '../context/PortfolioContext.jsx'
 
 function AboutMe() {
-  const [aboutMeData] = useState(initialAboutMeData)
+  const { aboutMeData, updateSectionContent } = usePortfolio()
   const { basicInfo, sections } = aboutMeData
   const [expandedId, setExpandedId] = useState(sections[0]?.id ?? false)
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleAccordionChange = (sectionId) => (event, isExpanded) => {
     setExpandedId(isExpanded ? sectionId : false)
@@ -29,7 +34,18 @@ function AboutMe() {
       <Container maxWidth="md">
         <SectionHeader title="About Me" />
 
-        <Card variant="outlined" sx={{ mt: 4, maxWidth: 720, mx: 'auto', bgcolor: 'background.paper' }}>
+        <Box sx={{ textAlign: 'center', mt: 2 }}>
+          <Button
+            size="small"
+            variant={isEditing ? 'contained' : 'outlined'}
+            startIcon={<EditIcon />}
+            onClick={() => setIsEditing((prev) => !prev)}
+          >
+            {isEditing ? '편집 완료' : '내용 편집'}
+          </Button>
+        </Box>
+
+        <Card variant="outlined" sx={{ mt: 3, maxWidth: 720, mx: 'auto', bgcolor: 'background.paper' }}>
           <CardContent sx={{ p: { xs: 3, md: 5 }, textAlign: 'center' }}>
             <Avatar
               sx={{
@@ -37,17 +53,16 @@ function AboutMe() {
                 height: 96,
                 mx: 'auto',
                 mb: 2,
-                fontSize: '2.75rem',
                 bgcolor: 'primary.light',
               }}
             >
-              {basicInfo.photo}
+              <PersonIcon sx={{ fontSize: '3rem', color: 'primary.dark' }} />
             </Avatar>
             <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
               {basicInfo.name}
             </Typography>
             <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 2 }}>
-              <Chip label={`경력 ${basicInfo.experience}`} size="small" color="primary" variant="outlined" />
+              <Chip label={basicInfo.experience} size="small" color="primary" variant="outlined" />
             </Stack>
           </CardContent>
         </Card>
@@ -73,15 +88,26 @@ function AboutMe() {
                   )}
                 </Stack>
               </AccordionSummary>
-              <AccordionDetails>
-                <Typography sx={{ color: 'text.secondary', lineHeight: 1.8 }}>{section.content}</Typography>
+              <AccordionDetails onClick={(event) => event.stopPropagation()}>
+                {isEditing ? (
+                  <TextField
+                    fullWidth
+                    multiline
+                    minRows={3}
+                    value={section.content}
+                    onChange={(event) => updateSectionContent(section.id, event.target.value)}
+                    placeholder="내용을 입력하세요"
+                  />
+                ) : (
+                  <Typography sx={{ color: 'text.secondary', lineHeight: 1.8 }}>{section.content}</Typography>
+                )}
               </AccordionDetails>
             </Accordion>
           ))}
         </Box>
       </Container>
 
-      <SkillsSection />
+      <SkillsSection editable={isEditing} />
     </Box>
   )
 }

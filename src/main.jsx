@@ -5,13 +5,16 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { HashRouter } from 'react-router-dom'
 import theme from './theme.js'
 import App from './App.jsx'
+import { PortfolioProvider } from './context/PortfolioContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <HashRouter>
-        <App />
+        <PortfolioProvider>
+          <App />
+        </PortfolioProvider>
       </HashRouter>
     </ThemeProvider>
   </StrictMode>,

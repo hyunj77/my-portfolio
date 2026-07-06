@@ -6,7 +6,6 @@ export const initialSkillsData = [
     level: 80,
     category: 'Frontend',
     description: '웹 문서의 구조를 만드는 마크업 언어',
-    isMainSkill: true,
   },
   {
     id: 2,
@@ -15,7 +14,6 @@ export const initialSkillsData = [
     level: 75,
     category: 'Frontend',
     description: '웹 페이지의 스타일과 레이아웃을 담당하는 언어',
-    isMainSkill: true,
   },
   {
     id: 3,
@@ -24,7 +22,6 @@ export const initialSkillsData = [
     level: 70,
     category: 'Frontend',
     description: '웹의 동작과 상호작용을 구현하는 프로그래밍 언어',
-    isMainSkill: true,
   },
   {
     id: 4,
@@ -33,7 +30,6 @@ export const initialSkillsData = [
     level: 60,
     category: 'Framework',
     description: '컴포넌트 기반 UI를 만드는 자바스크립트 라이브러리',
-    isMainSkill: true,
   },
   {
     id: 5,
@@ -42,25 +38,22 @@ export const initialSkillsData = [
     level: 65,
     category: 'Design',
     description: 'UI/UX 디자인과 프로토타이핑을 위한 협업 툴',
-    isMainSkill: true,
   },
   {
     id: 6,
     icon: 'photoshop',
     name: 'Adobe Photoshop',
-    level: null,
+    level: 80,
     category: 'Design',
     description: '이미지 편집과 그래픽 합성을 위한 툴',
-    isMainSkill: false,
   },
   {
     id: 7,
     icon: 'illustrator',
     name: 'Adobe Illustrator',
-    level: null,
+    level: 80,
     category: 'Design',
     description: '벡터 기반 일러스트 및 그래픽 디자인 툴',
-    isMainSkill: false,
   },
 ]
 
@@ -88,8 +81,4 @@ export const categoryOrder = ['Frontend', 'Framework', 'Design', 'Backend', '도
 
 export function getSkillsSortedByLevel(skills) {
   return [...skills].sort((a, b) => (b.level ?? 0) - (a.level ?? 0))
-}
-
-export function getTopSkills(skills, count = 5) {
-  return getSkillsSortedByLevel(skills.filter((skill) => skill.isMainSkill)).slice(0, count)
 }

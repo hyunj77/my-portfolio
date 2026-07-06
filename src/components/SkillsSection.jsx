@@ -8,52 +8,14 @@ import Grid from '@mui/material/Grid'
 import LinearProgress from '@mui/material/LinearProgress'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Slider from '@mui/material/Slider'
 import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import AddIcon from '@mui/icons-material/Add'
-import HtmlIcon from '@mui/icons-material/Html'
-import CssIcon from '@mui/icons-material/Css'
-import JavascriptIcon from '@mui/icons-material/Javascript'
-import HubIcon from '@mui/icons-material/Hub'
-import GpsFixedIcon from '@mui/icons-material/GpsFixed'
-import BrushIcon from '@mui/icons-material/Brush'
-import PaletteIcon from '@mui/icons-material/Palette'
-import LayersIcon from '@mui/icons-material/Layers'
-import WidgetsIcon from '@mui/icons-material/Widgets'
-import CodeIcon from '@mui/icons-material/Code'
-import DnsIcon from '@mui/icons-material/Dns'
-import DataObjectIcon from '@mui/icons-material/DataObject'
-import CoffeeIcon from '@mui/icons-material/Coffee'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import PhoneIphoneIcon from '@mui/icons-material/PhoneIphone'
-import StorageIcon from '@mui/icons-material/Storage'
-import ExtensionIcon from '@mui/icons-material/Extension'
 import SectionHeader from './SectionHeader.jsx'
-import { availableSkillsCatalog, categoryColors, categoryOrder, initialSkillsData } from '../data/skillsData.js'
-
-const ICON_MAP = {
-  html: HtmlIcon,
-  css: CssIcon,
-  javascript: JavascriptIcon,
-  react: HubIcon,
-  figma: GpsFixedIcon,
-  photoshop: BrushIcon,
-  illustrator: PaletteIcon,
-  vue: LayersIcon,
-  angular: WidgetsIcon,
-  typescript: CodeIcon,
-  node: DnsIcon,
-  python: DataObjectIcon,
-  java: CoffeeIcon,
-  git: GitHubIcon,
-  'react-native': PhoneIphoneIcon,
-  mongodb: StorageIcon,
-}
-
-function SkillIcon({ icon, color }) {
-  const IconComponent = ICON_MAP[icon] ?? ExtensionIcon
-  return <IconComponent sx={{ color, fontSize: 28 }} />
-}
+import SkillIcon from './SkillIcon.jsx'
+import { usePortfolio } from '../context/PortfolioContext.jsx'
+import { availableSkillsCatalog, categoryColors, categoryOrder } from '../data/skillsData.js'
 
 function AnimatedLevelBar({ level, color }) {
   const [value, setValue] = useState(0)
@@ -82,7 +44,7 @@ function AnimatedLevelBar({ level, color }) {
   )
 }
 
-function SkillCard({ skill }) {
+function SkillCard({ skill, editable, onLevelChange }) {
   const color = categoryColors[skill.category] ?? '#3d5afe'
 
   return (
@@ -123,20 +85,33 @@ function SkillCard({ skill }) {
         </Box>
 
         {skill.level != null && (
-          <>
-            <AnimatedLevelBar level={skill.level} color={color} />
-            <Typography sx={{ mt: 0.75, textAlign: 'right', fontSize: '0.85rem', color: 'text.secondary' }}>
-              {skill.level}%
-            </Typography>
-          </>
+          editable ? (
+            <Box sx={{ px: 0.5 }}>
+              <Slider
+                size="small"
+                value={skill.level}
+                onChange={(event, value) => onLevelChange(skill.id, value)}
+                valueLabelDisplay="auto"
+                sx={{ color }}
+              />
+            </Box>
+          ) : (
+            <>
+              <AnimatedLevelBar level={skill.level} color={color} />
+              <Typography sx={{ mt: 0.75, textAlign: 'right', fontSize: '0.85rem', color: 'text.secondary' }}>
+                {skill.level}%
+              </Typography>
+            </>
+          )
         )}
       </Card>
     </Tooltip>
   )
 }
 
-function SkillsSection() {
-  const [skills, setSkills] = useState(initialSkillsData)
+function SkillsSection({ editable = false }) {
+  const { aboutMeData, updateSkillLevel, addSkill } = usePortfolio()
+  const skills = aboutMeData.skills
   const [anchorEl, setAnchorEl] = useState(null)
   const menuOpen = Boolean(anchorEl)
 
@@ -159,18 +134,13 @@ function SkillsSection() {
   }, [skills])
 
   const handleAddSkill = (catalogSkill) => {
-    setSkills((prev) => [
-      ...prev,
-      {
-        id: prev.length ? Math.max(...prev.map((s) => s.id)) + 1 : 1,
-        icon: catalogSkill.icon,
-        name: catalogSkill.name,
-        level: 50,
-        category: catalogSkill.category,
-        description: catalogSkill.description,
-        isMainSkill: false,
-      },
-    ])
+    addSkill({
+      icon: catalogSkill.icon,
+      name: catalogSkill.name,
+      level: 50,
+      category: catalogSkill.category,
+      description: catalogSkill.description,
+    })
     setAnchorEl(null)
   }
 
@@ -196,7 +166,7 @@ function SkillsSection() {
               <Grid container spacing={2.5}>
                 {items.map((skill) => (
                   <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                    <SkillCard skill={skill} />
+                    <SkillCard skill={skill} editable={editable} onLevelChange={updateSkillLevel} />
                   </Grid>
                 ))}
               </Grid>
@@ -204,25 +174,27 @@ function SkillsSection() {
           ))}
         </Box>
 
-        <Box sx={{ textAlign: 'center', mt: 5 }}>
-          <Button
-            variant="outlined"
-            color="primary"
-            startIcon={<AddIcon />}
-            disabled={addableSkills.length === 0}
-            onClick={(event) => setAnchorEl(event.currentTarget)}
-          >
-            {addableSkills.length === 0 ? '모든 스킬 추가 완료' : '스킬 추가'}
-          </Button>
-          <Menu anchorEl={anchorEl} open={menuOpen} onClose={() => setAnchorEl(null)}>
-            {addableSkills.map((catalogSkill) => (
-              <MenuItem key={catalogSkill.name} onClick={() => handleAddSkill(catalogSkill)}>
-                <SkillIcon icon={catalogSkill.icon} color={categoryColors[catalogSkill.category] ?? '#3d5afe'} />
-                <Typography sx={{ ml: 1.5 }}>{catalogSkill.name}</Typography>
-              </MenuItem>
-            ))}
-          </Menu>
-        </Box>
+        {editable && (
+          <Box sx={{ textAlign: 'center', mt: 5 }}>
+            <Button
+              variant="outlined"
+              color="primary"
+              startIcon={<AddIcon />}
+              disabled={addableSkills.length === 0}
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+            >
+              {addableSkills.length === 0 ? '모든 스킬 추가 완료' : '스킬 추가'}
+            </Button>
+            <Menu anchorEl={anchorEl} open={menuOpen} onClose={() => setAnchorEl(null)}>
+              {addableSkills.map((catalogSkill) => (
+                <MenuItem key={catalogSkill.name} onClick={() => handleAddSkill(catalogSkill)}>
+                  <SkillIcon icon={catalogSkill.icon} color={categoryColors[catalogSkill.category] ?? '#3d5afe'} />
+                  <Typography sx={{ ml: 1.5 }}>{catalogSkill.name}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </Box>
+        )}
       </Box>
     </Box>
   )
