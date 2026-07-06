@@ -43,6 +43,31 @@ const ORBIT_POSITIONS = [
   { bottom: '2%', right: '12%' },
 ]
 
+const CIRCUIT_SVG = `
+<svg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'>
+  <g fill='none' stroke='rgba(61,90,254,0.22)' stroke-width='1.4'>
+    <path d='M0 22 H26 V6 H52 V22 H88'/>
+    <path d='M52 22 V44 H26 V66 H0'/>
+    <path d='M52 44 H88'/>
+    <path d='M26 66 V88'/>
+    <path d='M70 44 V70 H44 V88'/>
+  </g>
+  <g fill='rgba(61,90,254,0.4)'>
+    <circle cx='26' cy='22' r='2.4'/>
+    <circle cx='52' cy='6' r='2.4'/>
+    <circle cx='52' cy='22' r='2.4'/>
+    <circle cx='52' cy='44' r='2.4'/>
+    <circle cx='26' cy='44' r='2.4'/>
+    <circle cx='26' cy='66' r='2.4'/>
+    <circle cx='70' cy='44' r='2.4'/>
+    <circle cx='70' cy='70' r='2.4'/>
+    <circle cx='44' cy='70' r='2.4'/>
+  </g>
+</svg>
+`.trim()
+
+const CIRCUIT_BACKGROUND = `url("data:image/svg+xml,${encodeURIComponent(CIRCUIT_SVG)}")`
+
 function HeroSection() {
   const { aboutMeData, homeData } = usePortfolio()
   const { name, experience } = aboutMeData.basicInfo
@@ -64,8 +89,8 @@ function HeroSection() {
           content: '""',
           position: 'absolute',
           inset: 0,
-          backgroundImage: 'radial-gradient(rgba(61, 90, 254, 0.16) 1px, transparent 1.5px)',
-          backgroundSize: '24px 24px',
+          backgroundImage: CIRCUIT_BACKGROUND,
+          backgroundSize: '88px 88px',
           maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 75%)',
           pointerEvents: 'none',
         },
