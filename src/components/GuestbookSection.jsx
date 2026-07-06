@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { keyframes } from '@mui/material/styles'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -7,21 +8,30 @@ import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
+import Grow from '@mui/material/Grow'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
 import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import LanguageIcon from '@mui/icons-material/Language'
+import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
-import LocationOnIcon from '@mui/icons-material/LocationOn'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import { supabase } from '../lib/supabase.js'
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const EMOJIS = ['👋', '😊', '🔥', '💪', '✨', '🚀', '🌟', '💡']
 const MESSAGE_LIMIT = 500
 const ACCENTS = ['#8fa8ff', '#4272f6', '#6b8bff', '#20242b']
+
+const fadeInUp = keyframes`
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+`
 
 function formatDate(iso) {
   const d = new Date(iso)
@@ -38,6 +48,7 @@ function GuestbookSection() {
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [revealRef, isVisible] = useScrollReveal()
   const [error, setError] = useState('')
 
   async function loadEntries() {
@@ -115,8 +126,9 @@ function GuestbookSection() {
           width: { xs: 480, md: 720 },
           height: { xs: 480, md: 720 },
           color: 'primary.main',
-          opacity: 0.07,
+          opacity: 0.08,
           transform: 'translate(-50%, -50%) rotate(-6deg)',
+          filter: 'drop-shadow(0 0 18px rgba(66,114,246,0.3)) drop-shadow(0 0 36px rgba(245,228,42,0.18))',
           pointerEvents: 'none',
         }}
       >
@@ -132,7 +144,15 @@ function GuestbookSection() {
         </svg>
       </Box>
 
-      <Container maxWidth="md" sx={{ position: 'relative' }}>
+      <Container
+        ref={revealRef}
+        maxWidth="md"
+        sx={{
+          position: 'relative',
+          opacity: isVisible ? 1 : 0,
+          animation: isVisible ? `${fadeInUp} 0.6s ease-out both` : 'none',
+        }}
+      >
         <Box sx={{ textAlign: 'center' }}>
           <Chip
             label="Contact"
@@ -148,8 +168,20 @@ function GuestbookSection() {
         </Box>
 
         <Grid container spacing={2} sx={{ mt: 4 }}>
-          <Grid size={{ xs: 12, sm: 4 }}>
-            <Card variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, p: 2.5, textAlign: 'center' }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Card
+              variant="outlined"
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+                p: 2.5,
+                textAlign: 'center',
+              }}
+            >
               <Avatar sx={{ bgcolor: 'primary.light', color: 'primary.dark' }}>
                 <EmailIcon fontSize="small" />
               </Avatar>
@@ -161,23 +193,24 @@ function GuestbookSection() {
               </Typography>
             </Card>
           </Grid>
-          <Grid size={{ xs: 12, sm: 4 }}>
-            <Card variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, p: 2.5, textAlign: 'center' }}>
-              <Avatar sx={{ bgcolor: 'primary.light', color: 'primary.dark' }}>
-                <LocationOnIcon fontSize="small" />
-              </Avatar>
-              <Typography variant="overline" sx={{ color: 'text.secondary', lineHeight: 1 }}>
-                LOCATION
-              </Typography>
-              <Typography sx={{ fontWeight: 700 }}>Busan, South Korea</Typography>
-            </Card>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 4 }}>
-            <Card variant="outlined" sx={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, p: 2.5, textAlign: 'center' }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
+            <Card
+              variant="outlined"
+              sx={{
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 1,
+                p: 2.5,
+                textAlign: 'center',
+              }}
+            >
               <Typography variant="overline" sx={{ color: 'text.secondary', lineHeight: 1 }}>
                 SOCIAL
               </Typography>
-              <Stack direction="row" spacing={1} sx={{ mt: 1, justifyContent: 'center' }}>
+              <Stack direction="row" spacing={1} sx={{ mt: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
                 <IconButton
                   component="a"
                   href="https://github.com/hyunj77"
@@ -190,11 +223,31 @@ function GuestbookSection() {
                 </IconButton>
                 <IconButton
                   component="a"
-                  href="mailto:hyunj2727@gmail.com"
+                  href="https://www.linkedin.com/"
+                  target="_blank"
+                  rel="noreferrer"
                   sx={{ bgcolor: 'primary.light', color: 'primary.dark' }}
-                  aria-label="Email"
+                  aria-label="LinkedIn"
                 >
-                  <EmailIcon fontSize="small" />
+                  <LinkedInIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="https://hyunj77.github.io/my-portfolio/"
+                  target="_blank"
+                  rel="noreferrer"
+                  sx={{ bgcolor: 'primary.light', color: 'primary.dark' }}
+                  aria-label="포트폴리오 홈페이지"
+                >
+                  <LanguageIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="tel:01000000000"
+                  sx={{ bgcolor: 'primary.light', color: 'primary.dark' }}
+                  aria-label="전화 010-0000-0000"
+                >
+                  <PhoneIcon fontSize="small" />
                 </IconButton>
               </Stack>
             </Card>
@@ -234,6 +287,7 @@ function GuestbookSection() {
           <Grid container spacing={2}>
             {entries.map((entry, i) => (
               <Grid key={entry.id} size={{ xs: 12, sm: 6 }}>
+                <Grow in={isVisible} timeout={400 + i * 80}>
                 <Card
                   variant="outlined"
                   sx={{
@@ -265,6 +319,7 @@ function GuestbookSection() {
                     </Box>
                   </Stack>
                 </Card>
+                </Grow>
               </Grid>
             ))}
           </Grid>

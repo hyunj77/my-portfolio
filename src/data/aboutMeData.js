@@ -1,6 +1,6 @@
 export const initialAboutMeData = {
   basicInfo: {
-    name: '선현지',
+    name: 'Hyunji Sun',
     education: '',
     major: '',
     experience: '신입',

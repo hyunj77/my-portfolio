@@ -10,11 +10,18 @@ import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import { keyframes } from '@mui/material/styles'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import PersonIcon from '@mui/icons-material/Person'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
 import SectionHeader from '../components/SectionHeader.jsx'
 import SkillsSection from '../components/SkillsSection.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
+
+const fadeInUp = keyframes`
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+`
 
 function AboutMe() {
   const { aboutMeData } = usePortfolio()
@@ -33,20 +40,29 @@ function AboutMe() {
       <Container maxWidth="md">
         <SectionHeader title="About Me" />
 
-        <Card variant="outlined" sx={{ mt: 3, maxWidth: 720, mx: 'auto', bgcolor: 'background.paper' }}>
-          <CardContent sx={{ p: { xs: 3, md: 5 }, textAlign: 'center' }}>
+        <Card
+          variant="outlined"
+          sx={{
+            mt: 4,
+            maxWidth: 720,
+            mx: 'auto',
+            bgcolor: 'background.paper',
+            animation: `${fadeInUp} 0.5s ease-out both`,
+          }}
+        >
+          <CardContent sx={{ p: { xs: 2.5, sm: 3, md: 5 }, textAlign: 'center' }}>
             <Avatar
               role="img"
               aria-label="프로필 사진"
               sx={{
-                width: 96,
-                height: 96,
+                width: { xs: 80, sm: 88, md: 96 },
+                height: { xs: 80, sm: 88, md: 96 },
                 mx: 'auto',
                 mb: 2,
                 bgcolor: 'primary.light',
               }}
             >
-              <PersonIcon sx={{ fontSize: '3rem', color: 'primary.dark' }} aria-hidden="true" />
+              <PersonIcon sx={{ fontSize: { xs: '2.5rem', sm: '2.75rem', md: '3rem' }, color: 'primary.dark' }} aria-hidden="true" />
             </Avatar>
             <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
               {basicInfo.name}
@@ -54,11 +70,19 @@ function AboutMe() {
             <Stack direction="row" spacing={1} sx={{ mt: 2, justifyContent: 'center' }}>
               <Chip label={basicInfo.experience} size="small" color="primary" variant="outlined" />
             </Stack>
+            <Stack
+              direction="row"
+              spacing={0.5}
+              sx={{ mt: 1.5, justifyContent: 'center', alignItems: 'center', color: 'text.secondary' }}
+            >
+              <LocationOnIcon fontSize="small" aria-hidden="true" />
+              <Typography variant="body2">Busan, South Korea</Typography>
+            </Stack>
           </CardContent>
         </Card>
 
         <Box sx={{ mt: 4, maxWidth: 720, mx: 'auto' }}>
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <Accordion
               key={section.id}
               variant="outlined"
@@ -68,6 +92,7 @@ function AboutMe() {
                 mb: 2,
                 '&:before': { display: 'none' },
                 bgcolor: 'background.paper',
+                animation: `${fadeInUp} 0.5s ease-out ${index * 0.1}s both`,
               }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon aria-hidden="true" />}>

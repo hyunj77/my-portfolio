@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { alpha, keyframes } from '@mui/material/styles'
+import { alpha, keyframes, useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -12,6 +13,9 @@ import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
 import PersonIcon from '@mui/icons-material/Person'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import EmailIcon from '@mui/icons-material/Email'
 import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
 import { categoryColors } from '../data/skillsData.js'
@@ -91,6 +95,8 @@ function HeroSection() {
   const { name } = aboutMeData.basicInfo
   const orbitSkills = homeData.skills.slice(0, 4)
   const [typedLength, setTypedLength] = useState(0)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -154,7 +160,7 @@ function HeroSection() {
         width: '3px',
         height: '0.85em',
         ml: '3px',
-        bgcolor: 'secondary.dark',
+        bgcolor: 'primary.main',
         verticalAlign: '-0.1em',
         animation: `${blink} 1s steps(1) infinite`,
       }}
@@ -175,7 +181,8 @@ function HeroSection() {
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        py: { xs: 8, md: 12 },
+        pt: { xs: 6, sm: 8, md: 10, lg: 12 },
+        pb: { xs: 3, sm: 4, md: 5, lg: 6 },
         background: 'linear-gradient(160deg, #eef1fb 0%, #f4f6fb 55%, #ffffff 100%)',
         '&::before': {
           content: '""',
@@ -211,26 +218,35 @@ function HeroSection() {
           width: 280,
           height: 280,
           borderRadius: '50%',
-          bgcolor: alpha('#f5e42a', 0.4),
+          bgcolor: alpha('#7c9bff', 0.35),
           filter: 'blur(80px)',
         }}
       />
 
-      <Container maxWidth="lg" sx={{ position: 'relative' }}>
-        <Grid container spacing={{ xs: 6, md: 4 }} sx={{ alignItems: 'center' }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', px: { xs: 3, sm: 4 } }}>
+        <Grid container spacing={{ xs: 5, sm: 6, md: 4 }} sx={{ alignItems: 'center' }}>
           <Grid size={{ xs: 12, md: 7 }}>
-            <Stack spacing={2.5} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
-              <Chip
-                label={name}
-                size="small"
+            <Stack spacing={{ xs: 2, sm: 2.5 }} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
+              <Stack
+                direction="row"
+                spacing={1}
                 sx={{
-                  fontWeight: 700,
-                  letterSpacing: 0.5,
-                  bgcolor: 'primary.main',
-                  color: '#fff',
+                  flexWrap: 'wrap',
+                  justifyContent: { xs: 'center', md: 'flex-start' },
                   animation: `${fadeInUp} 0.6s ease-out both`,
                 }}
-              />
+              >
+                <Chip
+                  label="Web Designer"
+                  size="small"
+                  sx={{ fontWeight: 700, letterSpacing: 0.5, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
+                />
+                <Chip
+                  label="AI Builder"
+                  size="small"
+                  sx={{ fontWeight: 700, letterSpacing: 0.5, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
+                />
+              </Stack>
 
               <Typography
                 variant="h3"
@@ -239,11 +255,11 @@ function HeroSection() {
                 sx={{
                   fontFamily: '"Pretendard Variable", Pretendard, system-ui, sans-serif',
                   fontWeight: 800,
-                  fontSize: { xs: '1.75rem', md: '2.75rem' },
-                  lineHeight: 1.3,
+                  fontSize: { xs: '1.5rem', sm: '2rem', md: '2.4rem', lg: '2.75rem' },
+                  lineHeight: 1.35,
                   letterSpacing: '-0.5px',
                   maxWidth: 640,
-                  minHeight: { xs: '4.7rem', md: '7.2rem' },
+                  minHeight: { xs: '4.1rem', sm: '5.6rem', md: '6.5rem', lg: '7.2rem' },
                   wordBreak: 'keep-all',
                   color: 'text.primary',
                 }}
@@ -265,7 +281,8 @@ function HeroSection() {
                 sx={{
                   color: 'text.secondary',
                   maxWidth: 520,
-                  fontSize: { xs: '0.95rem', md: '1.05rem' },
+                  fontSize: { xs: '0.9rem', sm: '0.98rem', md: '1.05rem' },
+                  lineHeight: 1.7,
                   wordBreak: 'keep-all',
                   animation: `${fadeInUp} 0.6s ease-out 0.2s both`,
                 }}
@@ -274,10 +291,11 @@ function HeroSection() {
               </Typography>
 
               <Stack
-                direction="row"
+                direction={{ xs: 'column', sm: 'row' }}
                 spacing={1.5}
                 sx={{
                   mt: 1,
+                  width: { xs: '100%', sm: 'auto' },
                   flexWrap: 'wrap',
                   justifyContent: { xs: 'center', md: 'flex-start' },
                   animation: `${fadeInUp} 0.6s ease-out 0.3s both`,
@@ -289,10 +307,8 @@ function HeroSection() {
                   variant="contained"
                   color="primary"
                   size="large"
-                  sx={{
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    '&:hover': { transform: 'translateY(-3px)', boxShadow: 6 },
-                  }}
+                  fullWidth={isMobile}
+                  sx={{ minHeight: 44 }}
                 >
                   프로젝트 보기
                 </Button>
@@ -301,13 +317,71 @@ function HeroSection() {
                   variant="outlined"
                   color="primary"
                   size="large"
-                  sx={{
-                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                    '&:hover': { transform: 'translateY(-3px)', boxShadow: 3 },
-                  }}
+                  fullWidth={isMobile}
+                  sx={{ minHeight: 44 }}
                 >
                   연락하기
                 </Button>
+              </Stack>
+
+              <Stack
+                direction="row"
+                spacing={1.5}
+                sx={{
+                  mt: 0.5,
+                  justifyContent: { xs: 'center', md: 'flex-start' },
+                  animation: `${fadeInUp} 0.6s ease-out 0.4s both`,
+                }}
+              >
+                <IconButton
+                  component="a"
+                  href="https://github.com/hyunj77"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="GitHub"
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    bgcolor: 'primary.light',
+                    color: 'primary.dark',
+                    transition: 'transform 0.2s ease, background-color 0.2s ease',
+                    '&:hover': { transform: 'translateY(-3px)', bgcolor: 'primary.main', color: '#fff' },
+                  }}
+                >
+                  <GitHubIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="https://www.linkedin.com/"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="LinkedIn"
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    bgcolor: 'primary.light',
+                    color: 'primary.dark',
+                    transition: 'transform 0.2s ease, background-color 0.2s ease',
+                    '&:hover': { transform: 'translateY(-3px)', bgcolor: 'primary.main', color: '#fff' },
+                  }}
+                >
+                  <LinkedInIcon fontSize="small" />
+                </IconButton>
+                <IconButton
+                  component="a"
+                  href="mailto:hyunj2727@gmail.com"
+                  aria-label="이메일"
+                  sx={{
+                    width: 44,
+                    height: 44,
+                    bgcolor: 'primary.light',
+                    color: 'primary.dark',
+                    transition: 'transform 0.2s ease, background-color 0.2s ease',
+                    '&:hover': { transform: 'translateY(-3px)', bgcolor: 'primary.main', color: '#fff' },
+                  }}
+                >
+                  <EmailIcon fontSize="small" />
+                </IconButton>
               </Stack>
             </Stack>
           </Grid>
@@ -316,8 +390,8 @@ function HeroSection() {
             <Box
               sx={{
                 position: 'relative',
-                width: { xs: 240, md: 320 },
-                height: { xs: 240, md: 320 },
+                width: { xs: 220, sm: 280, md: 320 },
+                height: { xs: 220, sm: 280, md: 320 },
                 mx: 'auto',
                 animation: `${fadeInUp} 0.7s ease-out 0.15s both`,
               }}
@@ -330,13 +404,26 @@ function HeroSection() {
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
-                  width: { xs: 108, md: 136 },
-                  height: { xs: 108, md: 136 },
+                  width: { xs: 96, sm: 120, md: 136 },
+                  height: { xs: 96, sm: 120, md: 136 },
                   bgcolor: 'primary.light',
                   animation: `${pulseRing} 2.8s ease-out infinite`,
                 }}
               >
-                <PersonIcon sx={{ fontSize: { xs: '2.75rem', md: '3.5rem' }, color: 'primary.dark' }} aria-hidden="true" />
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.3 }}>
+                  <PersonIcon sx={{ fontSize: { xs: '1.9rem', sm: '2.3rem', md: '2.6rem' }, color: 'primary.dark' }} aria-hidden="true" />
+                  <Typography
+                    sx={{
+                      fontSize: { xs: '0.6rem', sm: '0.68rem', md: '0.75rem' },
+                      fontWeight: 700,
+                      color: 'primary.dark',
+                      whiteSpace: 'nowrap',
+                      lineHeight: 1,
+                    }}
+                  >
+                    {name}
+                  </Typography>
+                </Box>
               </Avatar>
 
               {orbitSkills.map((skill, index) => {
@@ -349,8 +436,8 @@ function HeroSection() {
                     sx={{
                       position: 'absolute',
                       ...position,
-                      width: { xs: 44, md: 56 },
-                      height: { xs: 44, md: 56 },
+                      width: { xs: 44, sm: 50, md: 56 },
+                      height: { xs: 44, sm: 50, md: 56 },
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
@@ -371,11 +458,13 @@ function HeroSection() {
         </Grid>
       </Container>
 
-      <Box sx={{ position: 'relative', textAlign: 'center', mt: { xs: 5, md: 7 } }}>
+      <Box sx={{ position: 'relative', textAlign: 'center', mt: { xs: 3, md: 4 } }}>
         <IconButton
           onClick={scrollToAboutMe}
           aria-label="아래로 스크롤하여 About Me 보기"
           sx={{
+            width: 44,
+            height: 44,
             color: 'primary.main',
             animation: `${bounce} 1.8s ease-in-out infinite`,
           }}

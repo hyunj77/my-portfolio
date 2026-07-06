@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles'
+import { alpha, createTheme } from '@mui/material/styles'
 
 const theme = createTheme({
   palette: {
@@ -36,7 +36,25 @@ const theme = createTheme({
   components: {
     MuiButton: {
       styleOverrides: {
-        root: { borderRadius: 8, padding: '10px 24px' },
+        root: ({ theme, ownerState }) => {
+          const hasGlow = ownerState.variant === 'contained' || ownerState.variant === 'outlined'
+          const glowColor =
+            hasGlow && ownerState.color && ownerState.color !== 'inherit'
+              ? theme.palette[ownerState.color]?.main
+              : null
+
+          return {
+            borderRadius: 8,
+            padding: '10px 24px',
+            transition: 'transform 0.2s ease, box-shadow 0.25s ease',
+            ...(glowColor && {
+              '&:hover': {
+                transform: 'translateY(-2px)',
+                boxShadow: `0 6px 22px ${alpha(glowColor, 0.4)}`,
+              },
+            }),
+          }
+        },
       },
     },
     MuiCard: {

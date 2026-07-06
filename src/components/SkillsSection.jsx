@@ -115,7 +115,7 @@ function SkillsSection() {
       <Box sx={{ maxWidth: 1000, mx: 'auto', px: { xs: 2, md: 0 } }}>
         <SectionHeader title="Skills" />
 
-        <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 5 }}>
+        <Box sx={{ mt: { xs: 3, md: 4 }, display: 'flex', flexDirection: 'column', gap: { xs: 4, md: 5 } }}>
           {groupedSkills.map(({ category, items }) => (
             <Box key={category}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -129,10 +129,10 @@ function SkillsSection() {
                 />
                 <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>{category}</Typography>
               </Box>
-              <Grid container spacing={2.5}>
-                {items.map((skill) => (
+              <Grid container spacing={{ xs: 2, sm: 2.5 }}>
+                {items.map((skill, index) => (
                   <Grid key={skill.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                    <Grow in timeout={400}>
+                    <Grow in timeout={400 + index * 80}>
                       <Box sx={{ height: '100%' }}>
                         <SkillCard skill={skill} />
                       </Box>
