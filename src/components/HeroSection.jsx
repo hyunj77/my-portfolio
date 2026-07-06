@@ -42,13 +42,17 @@ const blink = keyframes`
   50% { opacity: 0; }
 `
 
-const HEADLINE_PARTS = [
+const HEADLINE_LINE1 = [
   { text: '다양한 경험을 ', gradient: false },
   { text: '하나의 서비스로', gradient: true },
-  { text: ' 연결하는 개발자입니다', gradient: false },
 ]
 
-const HEADLINE_FULL_TEXT = HEADLINE_PARTS.map((part) => part.text).join('')
+const HEADLINE_LINE2 = [{ text: '연결하는 개발자입니다', gradient: false }]
+
+const HEADLINE_LINE1_LENGTH = HEADLINE_LINE1.reduce((sum, part) => sum + part.text.length, 0)
+const HEADLINE_LINE2_LENGTH = HEADLINE_LINE2.reduce((sum, part) => sum + part.text.length, 0)
+const HEADLINE_TOTAL_LENGTH = HEADLINE_LINE1_LENGTH + HEADLINE_LINE2_LENGTH
+const HEADLINE_FULL_TEXT = '다양한 경험을 하나의 서비스로 연결하는 개발자입니다'
 
 const ORBIT_POSITIONS = [
   { top: '2%', left: '8%' },
@@ -99,7 +103,7 @@ function HeroSection() {
     const timer = setInterval(() => {
       current += 1
       setTypedLength(current)
-      if (current >= HEADLINE_FULL_TEXT.length) {
+      if (current >= HEADLINE_TOTAL_LENGTH) {
         clearInterval(timer)
       }
     }, 55)
@@ -107,31 +111,55 @@ function HeroSection() {
     return () => clearInterval(timer)
   }, [])
 
-  let consumedLength = 0
-  const typedHeadlineParts = HEADLINE_PARTS.map((part, index) => {
-    const start = consumedLength
-    consumedLength += part.text.length
-    const visibleText = part.text.slice(0, Math.max(0, Math.min(part.text.length, typedLength - start)))
+  const renderTypedParts = (parts, lengthOffset, typedUpTo) => {
+    let consumedLength = 0
+    return parts.map((part, index) => {
+      const start = consumedLength
+      consumedLength += part.text.length
+      const visibleText = part.text.slice(
+        0,
+        Math.max(0, Math.min(part.text.length, typedUpTo - lengthOffset - start)),
+      )
 
-    return part.gradient ? (
-      <Box
-        key={index}
-        component="span"
-        sx={{
-          backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
-          backgroundClip: 'text',
-          WebkitBackgroundClip: 'text',
-          color: 'transparent',
-        }}
-      >
-        {visibleText}
-      </Box>
-    ) : (
-      <Box key={index} component="span">
-        {visibleText}
-      </Box>
-    )
-  })
+      return part.gradient ? (
+        <Box
+          key={index}
+          component="span"
+          sx={{
+            backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            color: 'transparent',
+          }}
+        >
+          {visibleText}
+        </Box>
+      ) : (
+        <Box key={index} component="span">
+          {visibleText}
+        </Box>
+      )
+    })
+  }
+
+  const isLine1Complete = typedLength >= HEADLINE_LINE1_LENGTH
+  const typedLine1Parts = renderTypedParts(HEADLINE_LINE1, 0, typedLength)
+  const typedLine2Parts = renderTypedParts(HEADLINE_LINE2, HEADLINE_LINE1_LENGTH, typedLength)
+
+  const cursor = (
+    <Box
+      component="span"
+      sx={{
+        display: 'inline-block',
+        width: '3px',
+        height: '0.85em',
+        ml: '3px',
+        bgcolor: 'primary.main',
+        verticalAlign: '-0.1em',
+        animation: `${blink} 1s steps(1) infinite`,
+      }}
+    />
+  )
 
   const scrollToAboutMe = () => {
     document.getElementById('home-about-me')?.scrollIntoView({ behavior: 'smooth' })
@@ -221,19 +249,15 @@ function HeroSection() {
                 }}
               >
                 <Box component="span" aria-hidden="true">
-                  {typedHeadlineParts}
-                  <Box
-                    component="span"
-                    sx={{
-                      display: 'inline-block',
-                      width: '3px',
-                      height: '0.85em',
-                      ml: '3px',
-                      bgcolor: 'primary.main',
-                      verticalAlign: '-0.1em',
-                      animation: `${blink} 1s steps(1) infinite`,
-                    }}
-                  />
+                  <Box component="span">
+                    {typedLine1Parts}
+                    {!isLine1Complete && cursor}
+                  </Box>
+                  <br />
+                  <Box component="span">
+                    {typedLine2Parts}
+                    {isLine1Complete && cursor}
+                  </Box>
                 </Box>
               </Typography>
 
