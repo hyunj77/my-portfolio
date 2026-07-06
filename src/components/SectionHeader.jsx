@@ -8,9 +8,9 @@ function SectionHeader({ title, light = false }) {
         variant="h4"
         sx={{
           display: 'inline-block',
-          fontSize: '1.6rem',
+          fontSize: '1.85rem',
           position: 'relative',
-          pb: 1,
+          pb: 1.75,
           color: light ? '#fff' : 'text.primary',
           '&::after': {
             content: '""',
