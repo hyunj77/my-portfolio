@@ -26,7 +26,7 @@ function AboutMeSection() {
   )
 
   return (
-    <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
+    <Box id="home-about-me" component="section" sx={{ py: { xs: 6, md: 9 }, scrollMarginTop: 72 }}>
       <Container maxWidth="md">
         <SectionHeader title="About Me" />
 

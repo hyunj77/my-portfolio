@@ -1,27 +1,273 @@
+import { Link as RouterLink } from 'react-router-dom'
+import { alpha, keyframes } from '@mui/material/styles'
+import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
 import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown'
+import PersonIcon from '@mui/icons-material/Person'
+import SkillIcon from './SkillIcon.jsx'
+import { usePortfolio } from '../context/PortfolioContext.jsx'
+import { categoryColors } from '../data/skillsData.js'
+
+const fadeInUp = keyframes`
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+`
+
+const float = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+`
+
+const pulseRing = keyframes`
+  0% { box-shadow: 0 0 0 0 rgba(61, 90, 254, 0.35); }
+  70% { box-shadow: 0 0 0 18px rgba(61, 90, 254, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(61, 90, 254, 0); }
+`
+
+const bounce = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+`
+
+const ORBIT_POSITIONS = [
+  { top: '2%', left: '8%' },
+  { top: '6%', right: '2%' },
+  { bottom: '10%', left: '0%' },
+  { bottom: '2%', right: '12%' },
+]
 
 function HeroSection() {
+  const { aboutMeData, homeData } = usePortfolio()
+  const { name, experience } = aboutMeData.basicInfo
+  const orbitSkills = homeData.skills.slice(0, 4)
+
+  const scrollToAboutMe = () => {
+    document.getElementById('home-about-me')?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   return (
     <Box
       component="section"
-      sx={{ bgcolor: 'background.paper', py: { xs: 8, md: 11 } }}
+      sx={{
+        position: 'relative',
+        overflow: 'hidden',
+        py: { xs: 8, md: 12 },
+        background: 'linear-gradient(160deg, #eef1fb 0%, #f4f6fb 55%, #ffffff 100%)',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'radial-gradient(rgba(61, 90, 254, 0.16) 1px, transparent 1.5px)',
+          backgroundSize: '24px 24px',
+          maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 75%)',
+          pointerEvents: 'none',
+        },
+      }}
     >
-      <Container
-        maxWidth="md"
-        sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 2.5 }}
-      >
-        <Chip
-          label="Hero"
-          size="small"
-          sx={{ fontWeight: 700, letterSpacing: 1, textTransform: 'uppercase', bgcolor: 'primary.main', color: '#fff' }}
-        />
-        <Typography variant="h3" sx={{ fontSize: { xs: '1.5rem', md: '2rem' }, letterSpacing: '-0.5px', maxWidth: 640 }}>
-          여기는 Hero 섹션입니다. 메인 비주얼, 이름, 간단 소개가 들어갈 예정입니다.
-        </Typography>
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          top: -80,
+          right: -60,
+          width: 320,
+          height: 320,
+          borderRadius: '50%',
+          bgcolor: 'primary.light',
+          filter: 'blur(70px)',
+          opacity: 0.7,
+        }}
+      />
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          bottom: -100,
+          left: -80,
+          width: 280,
+          height: 280,
+          borderRadius: '50%',
+          bgcolor: alpha('#7c8cff', 0.35),
+          filter: 'blur(80px)',
+        }}
+      />
+
+      <Container maxWidth="lg" sx={{ position: 'relative' }}>
+        <Grid container spacing={{ xs: 6, md: 4 }} sx={{ alignItems: 'center' }}>
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Stack spacing={2.5} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
+              <Chip
+                label={`${name} · ${experience}`}
+                size="small"
+                sx={{
+                  fontWeight: 700,
+                  letterSpacing: 0.5,
+                  bgcolor: 'primary.main',
+                  color: '#fff',
+                  animation: `${fadeInUp} 0.6s ease-out both`,
+                }}
+              />
+
+              <Typography
+                variant="h3"
+                component="h1"
+                sx={{
+                  fontFamily: '"Pretendard Variable", Pretendard, system-ui, sans-serif',
+                  fontWeight: 800,
+                  fontSize: { xs: '1.75rem', md: '2.75rem' },
+                  lineHeight: 1.3,
+                  letterSpacing: '-0.5px',
+                  maxWidth: 640,
+                  wordBreak: 'keep-all',
+                  color: 'text.primary',
+                  animation: `${fadeInUp} 0.6s ease-out 0.1s both`,
+                }}
+              >
+                다양한 경험을{' '}
+                <Box
+                  component="span"
+                  sx={{
+                    backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    color: 'transparent',
+                  }}
+                >
+                  하나의 서비스로
+                </Box>{' '}
+                연결하는 개발자입니다
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                  maxWidth: 520,
+                  fontSize: { xs: '0.95rem', md: '1.05rem' },
+                  wordBreak: 'keep-all',
+                  animation: `${fadeInUp} 0.6s ease-out 0.2s both`,
+                }}
+              >
+                하나의 아이디어를 완성도 있는 결과로 만들어가는 과정을 즐기며, 배움을 실력으로 연결합니다.
+              </Typography>
+
+              <Stack
+                direction="row"
+                spacing={1.5}
+                sx={{
+                  mt: 1,
+                  flexWrap: 'wrap',
+                  justifyContent: { xs: 'center', md: 'flex-start' },
+                  animation: `${fadeInUp} 0.6s ease-out 0.3s both`,
+                }}
+              >
+                <Button
+                  component={RouterLink}
+                  to="/projects"
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    '&:hover': { transform: 'translateY(-3px)', boxShadow: 6 },
+                  }}
+                >
+                  프로젝트 보기
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to="/about"
+                  variant="outlined"
+                  color="primary"
+                  size="large"
+                  sx={{
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                    '&:hover': { transform: 'translateY(-3px)', boxShadow: 3 },
+                  }}
+                >
+                  About Me
+                </Button>
+              </Stack>
+            </Stack>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box
+              sx={{
+                position: 'relative',
+                width: { xs: 240, md: 320 },
+                height: { xs: 240, md: 320 },
+                mx: 'auto',
+                animation: `${fadeInUp} 0.7s ease-out 0.15s both`,
+              }}
+            >
+              <Avatar
+                role="img"
+                aria-label="프로필 사진"
+                sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: { xs: 108, md: 136 },
+                  height: { xs: 108, md: 136 },
+                  bgcolor: 'primary.light',
+                  animation: `${pulseRing} 2.8s ease-out infinite`,
+                }}
+              >
+                <PersonIcon sx={{ fontSize: { xs: '2.75rem', md: '3.5rem' }, color: 'primary.dark' }} aria-hidden="true" />
+              </Avatar>
+
+              {orbitSkills.map((skill, index) => {
+                const color = categoryColors[skill.category] ?? '#3d5afe'
+                const position = ORBIT_POSITIONS[index % ORBIT_POSITIONS.length]
+                return (
+                  <Box
+                    key={skill.id}
+                    title={skill.name}
+                    sx={{
+                      position: 'absolute',
+                      ...position,
+                      width: { xs: 44, md: 56 },
+                      height: { xs: 44, md: 56 },
+                      borderRadius: '50%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      bgcolor: 'background.default',
+                      boxShadow: 3,
+                      animation: `${float} ${3 + index * 0.4}s ease-in-out ${index * 0.3}s infinite`,
+                      transition: 'transform 0.2s ease',
+                      '&:hover': { transform: 'scale(1.1)' },
+                    }}
+                  >
+                    <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 20, md: 26 } }} />
+                  </Box>
+                )
+              })}
+            </Box>
+          </Grid>
+        </Grid>
       </Container>
+
+      <Box sx={{ position: 'relative', textAlign: 'center', mt: { xs: 5, md: 7 } }}>
+        <IconButton
+          onClick={scrollToAboutMe}
+          aria-label="아래로 스크롤하여 About Me 보기"
+          sx={{
+            color: 'primary.main',
+            animation: `${bounce} 1.8s ease-in-out infinite`,
+          }}
+        >
+          <KeyboardArrowDownIcon fontSize="large" />
+        </IconButton>
+      </Box>
     </Box>
   )
 }

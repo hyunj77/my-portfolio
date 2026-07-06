@@ -175,7 +175,7 @@ function GuestbookSection() {
             alignItems: { xs: 'flex-start', sm: 'center' },
           }}
         >
-          <Stack direction="row" alignItems="center" spacing={1.5}>
+          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
             <Typography variant="h6">방명록</Typography>
             <Chip label={`${entries.length}개`} size="small" sx={{ bgcolor: 'primary.light', color: 'primary.dark' }} />
           </Stack>
@@ -207,7 +207,7 @@ function GuestbookSection() {
                     borderLeftColor: ACCENTS[i % ACCENTS.length],
                   }}
                 >
-                  <Stack direction="row" spacing={1.5} alignItems="flex-start">
+                  <Stack direction="row" spacing={1.5} sx={{ alignItems: 'flex-start' }}>
                     <Avatar sx={{ bgcolor: 'primary.light', width: 34, height: 34, fontSize: '0.95rem' }}>
                       {entry.emoji}
                     </Avatar>
