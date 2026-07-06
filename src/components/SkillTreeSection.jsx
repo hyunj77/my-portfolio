@@ -17,11 +17,15 @@ function SkillTreeSection() {
     <Box component="section" sx={{ py: { xs: 6, md: 9 }, bgcolor: 'background.paper' }}>
       <Container maxWidth="sm">
         <SectionHeader title="Skills" />
-        <Stack direction="row" flexWrap="wrap" justifyContent="center" spacing={3} sx={{ mt: 4 }}>
+        <Stack
+          direction="row"
+          spacing={3}
+          sx={{ mt: 4, flexWrap: 'wrap', justifyContent: 'center' }}
+        >
           {homeData.skills.map((skill) => {
             const color = categoryColors[skill.category] ?? '#3d5afe'
             return (
-              <Stack key={skill.id} alignItems="center" spacing={1} sx={{ width: 84 }}>
+              <Stack key={skill.id} spacing={1} sx={{ width: 84, alignItems: 'center' }}>
                 <Box
                   sx={{
                     width: 56,

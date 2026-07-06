@@ -61,7 +61,7 @@ function AboutMe() {
             <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
               {basicInfo.name}
             </Typography>
-            <Stack direction="row" spacing={1} justifyContent="center" sx={{ mt: 2 }}>
+            <Stack direction="row" spacing={1} sx={{ mt: 2, justifyContent: 'center' }}>
               <Chip label={basicInfo.experience} size="small" color="primary" variant="outlined" />
             </Stack>
           </CardContent>
@@ -81,7 +81,7 @@ function AboutMe() {
               }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                   <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>{section.title}</Typography>
                   {section.showInHome && (
                     <Chip label="홈 노출" size="small" sx={{ bgcolor: 'primary.light', color: 'primary.dark' }} />

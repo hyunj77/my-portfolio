@@ -55,11 +55,11 @@ function AboutMeSection() {
 
         <Card variant="outlined" sx={{ mt: 3, bgcolor: 'background.paper' }}>
           <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Stack direction="row" flexWrap="wrap" justifyContent="center" spacing={3}>
+            <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
               {skills.map((skill) => {
                 const color = categoryColors[skill.category] ?? '#3d5afe'
                 return (
-                  <Stack key={skill.id} alignItems="center" spacing={0.75} sx={{ width: 72 }}>
+                  <Stack key={skill.id} spacing={0.75} sx={{ width: 72, alignItems: 'center' }}>
                     <Box
                       sx={{
                         width: 44,
