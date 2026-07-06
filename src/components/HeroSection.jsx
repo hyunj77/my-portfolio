@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
 import { alpha, keyframes } from '@mui/material/styles'
 import Avatar from '@mui/material/Avatar'
@@ -36,6 +37,19 @@ const bounce = keyframes`
   50% { transform: translateY(8px); }
 `
 
+const blink = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+`
+
+const HEADLINE_PARTS = [
+  { text: '다양한 경험을 ', gradient: false },
+  { text: '하나의 서비스로', gradient: true },
+  { text: ' 연결하는 개발자입니다', gradient: false },
+]
+
+const HEADLINE_FULL_TEXT = HEADLINE_PARTS.map((part) => part.text).join('')
+
 const ORBIT_POSITIONS = [
   { top: '2%', left: '8%' },
   { top: '6%', right: '2%' },
@@ -72,6 +86,52 @@ function HeroSection() {
   const { aboutMeData, homeData } = usePortfolio()
   const { name } = aboutMeData.basicInfo
   const orbitSkills = homeData.skills.slice(0, 4)
+  const [typedLength, setTypedLength] = useState(0)
+
+  useEffect(() => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReducedMotion) {
+      setTypedLength(HEADLINE_FULL_TEXT.length)
+      return undefined
+    }
+
+    let current = 0
+    const timer = setInterval(() => {
+      current += 1
+      setTypedLength(current)
+      if (current >= HEADLINE_FULL_TEXT.length) {
+        clearInterval(timer)
+      }
+    }, 55)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  let consumedLength = 0
+  const typedHeadlineParts = HEADLINE_PARTS.map((part, index) => {
+    const start = consumedLength
+    consumedLength += part.text.length
+    const visibleText = part.text.slice(0, Math.max(0, Math.min(part.text.length, typedLength - start)))
+
+    return part.gradient ? (
+      <Box
+        key={index}
+        component="span"
+        sx={{
+          backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
+          backgroundClip: 'text',
+          WebkitBackgroundClip: 'text',
+          color: 'transparent',
+        }}
+      >
+        {visibleText}
+      </Box>
+    ) : (
+      <Box key={index} component="span">
+        {visibleText}
+      </Box>
+    )
+  })
 
   const scrollToAboutMe = () => {
     document.getElementById('home-about-me')?.scrollIntoView({ behavior: 'smooth' })
@@ -147,6 +207,7 @@ function HeroSection() {
               <Typography
                 variant="h3"
                 component="h1"
+                aria-label={HEADLINE_FULL_TEXT}
                 sx={{
                   fontFamily: '"Pretendard Variable", Pretendard, system-ui, sans-serif',
                   fontWeight: 800,
@@ -154,24 +215,26 @@ function HeroSection() {
                   lineHeight: 1.3,
                   letterSpacing: '-0.5px',
                   maxWidth: 640,
+                  minHeight: { xs: '4.7rem', md: '7.2rem' },
                   wordBreak: 'keep-all',
                   color: 'text.primary',
-                  animation: `${fadeInUp} 0.6s ease-out 0.1s both`,
                 }}
               >
-                다양한 경험을{' '}
-                <Box
-                  component="span"
-                  sx={{
-                    backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
-                    backgroundClip: 'text',
-                    WebkitBackgroundClip: 'text',
-                    color: 'transparent',
-                  }}
-                >
-                  하나의 서비스로
-                </Box>{' '}
-                연결하는 개발자입니다
+                <Box component="span" aria-hidden="true">
+                  {typedHeadlineParts}
+                  <Box
+                    component="span"
+                    sx={{
+                      display: 'inline-block',
+                      width: '3px',
+                      height: '0.85em',
+                      ml: '3px',
+                      bgcolor: 'primary.main',
+                      verticalAlign: '-0.1em',
+                      animation: `${blink} 1s steps(1) infinite`,
+                    }}
+                  />
+                </Box>
               </Typography>
 
               <Typography

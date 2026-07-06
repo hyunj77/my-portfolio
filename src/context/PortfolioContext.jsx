@@ -1,42 +1,19 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import { initialAboutMeData } from '../data/aboutMeData.js'
 import { getSkillsSortedByLevel, initialSkillsData } from '../data/skillsData.js'
 
 const PortfolioContext = createContext(null)
 
 export function PortfolioProvider({ children }) {
-  const [aboutMeData, setAboutMeData] = useState({
-    ...initialAboutMeData,
-    skills: initialSkillsData,
-  })
+  const aboutMeData = useMemo(
+    () => ({
+      ...initialAboutMeData,
+      skills: initialSkillsData,
+    }),
+    [],
+  )
 
-  const updateSectionContent = useCallback((sectionId, content) => {
-    setAboutMeData((prev) => ({
-      ...prev,
-      sections: prev.sections.map((section) =>
-        section.id === sectionId ? { ...section, content } : section,
-      ),
-    }))
-  }, [])
-
-  const updateSkillLevel = useCallback((skillId, level) => {
-    setAboutMeData((prev) => ({
-      ...prev,
-      skills: prev.skills.map((skill) => (skill.id === skillId ? { ...skill, level } : skill)),
-    }))
-  }, [])
-
-  const addSkill = useCallback((skill) => {
-    setAboutMeData((prev) => ({
-      ...prev,
-      skills: [
-        ...prev.skills,
-        { ...skill, id: prev.skills.length ? Math.max(...prev.skills.map((s) => s.id)) + 1 : 1 },
-      ],
-    }))
-  }, [])
-
-  const getHomeData = useCallback(() => {
+  const homeData = useMemo(() => {
     const homeContent = aboutMeData.sections
       .filter((section) => section.showInHome)
       .map((section) => ({
@@ -50,20 +27,7 @@ export function PortfolioProvider({ children }) {
     return { content: homeContent, skills: topSkills, basicInfo: aboutMeData.basicInfo }
   }, [aboutMeData])
 
-  const homeData = useMemo(() => getHomeData(), [getHomeData])
-
-  const value = useMemo(
-    () => ({
-      aboutMeData,
-      setAboutMeData,
-      updateSectionContent,
-      updateSkillLevel,
-      addSkill,
-      getHomeData,
-      homeData,
-    }),
-    [aboutMeData, updateSectionContent, updateSkillLevel, addSkill, getHomeData, homeData],
-  )
+  const value = useMemo(() => ({ aboutMeData, homeData }), [aboutMeData, homeData])
 
   return <PortfolioContext.Provider value={value}>{children}</PortfolioContext.Provider>
 }

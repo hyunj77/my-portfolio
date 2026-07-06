@@ -49,9 +49,6 @@ function ProjectsPreviewSection() {
     <Box component="section" sx={{ py: { xs: 6, md: 9 } }}>
       <Container maxWidth="md">
         <SectionHeader title="Projects" />
-        <Typography sx={{ textAlign: 'center', color: 'text.secondary', mt: 1.5, mb: 4 }}>
-          여기는 Projects 섹션입니다. 대표작 썸네일 3-4개와 '더 보기' 버튼이 들어갈 예정입니다.
-        </Typography>
 
         {status === 'ready' && projects.length > 0 && (
           <Grid container spacing={2.5} sx={{ mb: 4 }}>

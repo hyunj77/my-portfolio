@@ -141,7 +141,7 @@ function GuestbookSection() {
               <Typography variant="overline" sx={{ color: 'text.secondary', lineHeight: 1 }}>
                 SOCIAL
               </Typography>
-              <Stack direction="row" spacing={1}>
+              <Stack direction="row" spacing={1} sx={{ mt: 1, justifyContent: 'center' }}>
                 <IconButton
                   component="a"
                   href="https://github.com/hyunj77"
