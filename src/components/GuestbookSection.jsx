@@ -21,7 +21,7 @@ import { supabase } from '../lib/supabase.js'
 
 const EMOJIS = ['👋', '😊', '🔥', '💪', '✨', '🚀', '🌟', '💡']
 const MESSAGE_LIMIT = 500
-const ACCENTS = ['#8fa6ff', '#3d5afe', '#6b85ff', '#1b2a56']
+const ACCENTS = ['#8fa8ff', '#4272f6', '#6b8bff', '#20242b']
 
 function formatDate(iso) {
   const d = new Date(iso)
@@ -95,13 +95,49 @@ function GuestbookSection() {
   }
 
   return (
-    <Box id="home-contact" component="section" sx={{ py: { xs: 6, md: 9 }, bgcolor: 'background.paper', scrollMarginTop: 72 }}>
-      <Container maxWidth="md">
+    <Box
+      id="home-contact"
+      component="section"
+      sx={{
+        position: 'relative',
+        overflow: 'hidden',
+        py: { xs: 6, md: 9 },
+        bgcolor: 'background.paper',
+        scrollMarginTop: 72,
+      }}
+    >
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          width: { xs: 480, md: 720 },
+          height: { xs: 480, md: 720 },
+          color: 'primary.main',
+          opacity: 0.07,
+          transform: 'translate(-50%, -50%) rotate(-6deg)',
+          pointerEvents: 'none',
+        }}
+      >
+        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+          <rect x="10" y="40" width="380" height="240" rx="20" stroke="currentColor" strokeWidth="8" />
+          <path
+            d="M18 56 L200 195 L382 56"
+            stroke="currentColor"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Box>
+
+      <Container maxWidth="md" sx={{ position: 'relative' }}>
         <Box sx={{ textAlign: 'center' }}>
           <Chip
             label="Contact"
             size="small"
-            sx={{ mb: 1.5, fontWeight: 700, bgcolor: 'rgba(61,90,254,0.15)', color: 'primary.dark' }}
+            sx={{ mb: 1.5, fontWeight: 700, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
           />
           <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
             여기까지 와주셔서 반가워요 🌱

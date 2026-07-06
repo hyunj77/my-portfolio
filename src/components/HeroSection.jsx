@@ -27,9 +27,9 @@ const float = keyframes`
 `
 
 const pulseRing = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(61, 90, 254, 0.35); }
-  70% { box-shadow: 0 0 0 18px rgba(61, 90, 254, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(61, 90, 254, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(66, 114, 246, 0.35); }
+  70% { box-shadow: 0 0 0 18px rgba(66, 114, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(66, 114, 246, 0); }
 `
 
 const bounce = keyframes`
@@ -63,14 +63,14 @@ const ORBIT_POSITIONS = [
 
 const CIRCUIT_SVG = `
 <svg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'>
-  <g fill='none' stroke='rgba(61,90,254,0.22)' stroke-width='1.4'>
+  <g fill='none' stroke='rgba(66,114,246,0.22)' stroke-width='1.4'>
     <path d='M0 22 H26 V6 H52 V22 H88'/>
     <path d='M52 22 V44 H26 V66 H0'/>
     <path d='M52 44 H88'/>
     <path d='M26 66 V88'/>
     <path d='M70 44 V70 H44 V88'/>
   </g>
-  <g fill='rgba(61,90,254,0.4)'>
+  <g fill='rgba(66,114,246,0.4)'>
     <circle cx='26' cy='22' r='2.4'/>
     <circle cx='52' cy='6' r='2.4'/>
     <circle cx='52' cy='22' r='2.4'/>
@@ -126,7 +126,7 @@ function HeroSection() {
           key={index}
           component="span"
           sx={{
-            backgroundImage: 'linear-gradient(90deg, #3d5afe, #7c8cff)',
+            backgroundImage: 'linear-gradient(90deg, #4272f6, #7c9bff)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
@@ -154,7 +154,7 @@ function HeroSection() {
         width: '3px',
         height: '0.85em',
         ml: '3px',
-        bgcolor: 'primary.main',
+        bgcolor: 'secondary.dark',
         verticalAlign: '-0.1em',
         animation: `${blink} 1s steps(1) infinite`,
       }}
@@ -211,7 +211,7 @@ function HeroSection() {
           width: 280,
           height: 280,
           borderRadius: '50%',
-          bgcolor: alpha('#7c8cff', 0.35),
+          bgcolor: alpha('#f5e42a', 0.4),
           filter: 'blur(80px)',
         }}
       />

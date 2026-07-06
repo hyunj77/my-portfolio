@@ -51,7 +51,7 @@ function ProjectsPreviewSection() {
         <SectionHeader title="Projects" />
 
         {status === 'ready' && projects.length > 0 && (
-          <Grid container spacing={2.5} sx={{ mb: 4 }}>
+          <Grid container spacing={2.5} sx={{ mt: 4, mb: 4 }}>
             {projects.map((project) => (
               <Grid key={project.id} size={{ xs: 12, sm: 6, md: 4 }}>
                 <Card variant="outlined" sx={{ height: '100%' }}>
