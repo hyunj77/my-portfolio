@@ -154,8 +154,8 @@ function GuestbookSection() {
           animation: isVisible ? `${fadeInUp} 0.6s ease-out both` : 'none',
         }}
       >
-        <SectionHeader title="Contact" />
-        <Box sx={{ textAlign: 'center' }}>
+        <SectionHeader title="Contact" underlineColor="rgba(66,114,246,0.15)" />
+        <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
             여기까지 와주셔서 반가워요 🌱
           </Typography>

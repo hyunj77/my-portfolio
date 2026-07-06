@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 
-function SectionHeader({ title, light = false }) {
+function SectionHeader({ title, light = false, underlineColor }) {
   return (
     <Box sx={{ textAlign: 'center', mb: 1 }}>
       <Typography
@@ -20,7 +20,7 @@ function SectionHeader({ title, light = false }) {
             bottom: 0,
             height: 4,
             borderRadius: 2,
-            bgcolor: light ? 'rgba(255,255,255,0.7)' : 'primary.light',
+            bgcolor: underlineColor ?? (light ? 'rgba(255,255,255,0.7)' : 'primary.light'),
           },
         }}
       >
