@@ -113,7 +113,7 @@ function GuestbookSection() {
         position: 'relative',
         overflow: 'hidden',
         py: { xs: 6, md: 9 },
-        bgcolor: 'background.paper',
+        bgcolor: 'primary.light',
         scrollMarginTop: 72,
       }}
     >
