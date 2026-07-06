@@ -21,6 +21,7 @@ import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
+import SectionHeader from './SectionHeader.jsx'
 import { supabase } from '../lib/supabase.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
@@ -153,12 +154,8 @@ function GuestbookSection() {
           animation: isVisible ? `${fadeInUp} 0.6s ease-out both` : 'none',
         }}
       >
+        <SectionHeader title="Contact" />
         <Box sx={{ textAlign: 'center' }}>
-          <Chip
-            label="Contact"
-            size="small"
-            sx={{ mb: 1.5, fontWeight: 700, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
-          />
           <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
             여기까지 와주셔서 반가워요 🌱
           </Typography>
