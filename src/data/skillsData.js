@@ -150,7 +150,7 @@ export const categoryColorsDark = {
   '도구 & 기타': '#fb923c',
 }
 
-export const categoryOrder = ['Frontend', 'Framework', 'Design', 'Backend', '도구 & 기타']
+export const categoryOrder = ['Design', 'Frontend', 'Framework', 'Backend', '도구 & 기타']
 
 export function getCategoryColor(category, mode) {
   const map = mode === 'dark' ? categoryColorsDark : categoryColors
