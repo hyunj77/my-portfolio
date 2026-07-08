@@ -22,6 +22,9 @@ import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
+import ChatBubbleOutlineRoundedIcon from '@mui/icons-material/ChatBubbleOutlineRounded'
+import NearMeIcon from '@mui/icons-material/NearMe'
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import SectionHeader from './SectionHeader.jsx'
 import LoadingSpinner from './LoadingSpinner.jsx'
 import { supabase } from '../lib/supabase.js'
@@ -35,6 +38,21 @@ const MESSAGE_LIMIT = 500
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
+`
+
+const swirlSway = keyframes`
+  0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+  50% { transform: translate(-20px, 16px) rotate(-1.4deg); }
+`
+
+const float = keyframes`
+  0%, 100% { transform: translateY(0) rotate(var(--chip-rotate, 0deg)); }
+  50% { transform: translateY(-10px) rotate(var(--chip-rotate, 0deg)); }
+`
+
+const pulse = keyframes`
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
 `
 
 function formatDate(iso) {
@@ -135,7 +153,9 @@ function GuestbookSection() {
         position: 'relative',
         overflow: 'hidden',
         py: { xs: 6, md: 9 },
-        bgcolor: tints.wash,
+        // Hero는 wash → washSoft → default로 흐르는데, Contact는 반대 방향으로 흘러
+        // 같은 팔레트를 공유하면서도 "다른 장면"처럼 보이게 한다.
+        background: `linear-gradient(200deg, ${theme.palette.background.default} 0%, ${tints.washSoft} 55%, ${tints.wash} 100%)`,
         scrollMarginTop: 72,
       }}
     >
@@ -143,27 +163,92 @@ function GuestbookSection() {
         aria-hidden="true"
         sx={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          width: { xs: 480, md: 720 },
-          height: { xs: 480, md: 720 },
-          color: 'primary.main',
-          opacity: 0.08,
-          transform: 'translate(-50%, -50%) rotate(-6deg)',
-          filter: `drop-shadow(0 0 18px ${alpha(theme.palette.primary.main, 0.3)}) drop-shadow(0 0 36px ${alpha(theme.palette.secondary.main, 0.18)})`,
+          top: '-18%',
+          right: '-12%',
+          width: { xs: 320, md: 480 },
+          height: { xs: 320, md: 480 },
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(theme.palette.primary.main, 0.22)} 0%, ${alpha(theme.palette.primary.main, 0)} 70%)`,
+          filter: 'blur(10px)',
+          animation: `${swirlSway} 24s ease-in-out infinite`,
           pointerEvents: 'none',
         }}
+      />
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          bottom: '-22%',
+          left: '-10%',
+          width: { xs: 280, md: 420 },
+          height: { xs: 280, md: 420 },
+          borderRadius: '50%',
+          background: `radial-gradient(circle, ${alpha(tints.accentLavender, 0.28)} 0%, ${alpha(tints.accentLavender, 0)} 70%)`,
+          filter: 'blur(10px)',
+          animation: `${swirlSway} 27s ease-in-out 1.2s infinite`,
+          pointerEvents: 'none',
+        }}
+      />
+
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          top: { sm: '8%' },
+          left: { sm: '6%' },
+          width: 52,
+          height: 52,
+          display: { xs: 'none', sm: 'flex' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '20%',
+          bgcolor: 'background.paper',
+          boxShadow: '0 12px 20px -8px rgba(20,24,43,0.28), 0 1px 2px rgba(20,24,43,0.08)',
+          '--chip-rotate': '-8deg',
+          animation: `${float} 3.6s ease-in-out infinite`,
+        }}
       >
-        <svg viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
-          <rect x="10" y="40" width="380" height="240" rx="20" stroke="currentColor" strokeWidth="8" />
-          <path
-            d="M18 56 L200 195 L382 56"
-            stroke="currentColor"
-            strokeWidth="8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChatBubbleOutlineRoundedIcon sx={{ fontSize: 24, color: 'primary.main' }} />
+      </Box>
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          top: { sm: '14%' },
+          right: { sm: '8%' },
+          width: 44,
+          height: 44,
+          display: { xs: 'none', sm: 'flex' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '20%',
+          bgcolor: 'background.paper',
+          boxShadow: '0 12px 20px -8px rgba(20,24,43,0.28), 0 1px 2px rgba(20,24,43,0.08)',
+          '--chip-rotate': '10deg',
+          animation: `${float} 4.1s ease-in-out 0.4s infinite`,
+        }}
+      >
+        <FavoriteRoundedIcon sx={{ fontSize: 20, color: 'primary.main' }} />
+      </Box>
+      <Box
+        aria-hidden="true"
+        sx={{
+          position: 'absolute',
+          bottom: { sm: '10%' },
+          right: { sm: '16%' },
+          width: 48,
+          height: 48,
+          display: { xs: 'none', sm: 'flex' },
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '20%',
+          bgcolor: 'background.paper',
+          boxShadow: '0 12px 20px -8px rgba(20,24,43,0.28), 0 1px 2px rgba(20,24,43,0.08)',
+          '--chip-rotate': '-6deg',
+          animation: `${float} 3.9s ease-in-out 0.8s infinite`,
+        }}
+      >
+        <NearMeIcon sx={{ fontSize: 22, color: 'primary.main', transform: 'rotate(-70deg)' }} />
       </Box>
 
       <Container
@@ -177,9 +262,26 @@ function GuestbookSection() {
       >
         <SectionHeader title="Contact" underlineColor={alpha(theme.palette.primary.main, 0.15)} animate={isVisible} />
         <Box sx={{ mt: 4, textAlign: 'center' }}>
-          <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
-            여기까지 와주셔서 반가워요 🌱
-          </Typography>
+          <Stack direction="row" spacing={1.25} sx={{ justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap' }}>
+            <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
+              여기까지 와주셔서 반가워요
+            </Typography>
+            <Grow in={isVisible} timeout={700}>
+              <Box
+                aria-hidden="true"
+                component="span"
+                sx={{
+                  display: 'inline-block',
+                  fontSize: '1.9rem',
+                  lineHeight: 1,
+                  transformOrigin: '50% 50%',
+                  animation: `${pulse} 1.1s ease-in-out 3 both`,
+                }}
+              >
+                🫶
+              </Box>
+            </Grow>
+          </Stack>
           <Typography sx={{ mt: 1, color: 'text.secondary' }}>
             새로운 인연과 프로젝트를 기다립니다. 방명록에 흔적을 남겨주세요!
           </Typography>
@@ -274,13 +376,14 @@ function GuestbookSection() {
 
         <Divider sx={{ mt: 7, mb: 4 }} />
 
-        <Typography sx={{ fontWeight: 700, fontSize: '1.3rem', color: 'text.primary' }}>방명록</Typography>
+        <SectionHeader title="Guestbook" underlineColor={alpha(theme.palette.primary.main, 0.15)} animate={isVisible} />
+        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>방명록에 흔적을 남겨주세요!</Typography>
 
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}
           sx={{
-            mt: 1.5,
+            mt: 3,
             mb: 3,
             justifyContent: 'space-between',
             alignItems: { xs: 'flex-start', sm: 'center' },
