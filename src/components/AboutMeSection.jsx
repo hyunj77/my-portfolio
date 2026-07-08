@@ -83,16 +83,16 @@ function AboutMeSection() {
 
         <Card variant="outlined" sx={{ mt: 3, bgcolor: 'background.paper' }}>
           <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-            <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+            <Stack direction="row" spacing={{ xs: 0.5, md: 3 }} useFlexGap sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
               {skills.map((skill, index) => {
                 const color = categoryColors[skill.category] ?? '#3d5afe'
                 return (
                   <Grow key={skill.id} in={isVisible} timeout={400 + index * 100}>
-                    <Stack spacing={0.75} sx={{ width: 72, alignItems: 'center' }}>
+                    <Stack spacing={{ xs: 0.25, md: 0.75 }} sx={{ width: { xs: 36, md: 72 }, alignItems: 'center' }}>
                       <Box
                         sx={{
-                          width: 44,
-                          height: 44,
+                          width: { xs: 28, md: 44 },
+                          height: { xs: 28, md: 44 },
                           borderRadius: '50%',
                           display: 'flex',
                           alignItems: 'center',
@@ -100,9 +100,12 @@ function AboutMeSection() {
                           bgcolor: alpha(color, 0.12),
                         }}
                       >
-                        <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: 22 }} />
+                        <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 14, md: 22 } }} />
                       </Box>
-                      <Typography variant="caption" sx={{ fontWeight: 600, textAlign: 'center' }}>
+                      <Typography
+                        variant="caption"
+                        sx={{ fontWeight: 600, textAlign: 'center', fontSize: { xs: '0.6rem', md: '0.75rem' }, lineHeight: 1.15 }}
+                      >
                         {skill.name}
                       </Typography>
                     </Stack>

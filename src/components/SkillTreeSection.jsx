@@ -32,18 +32,19 @@ function SkillTreeSection() {
         <SectionHeader title="Skills" />
         <Stack
           direction="row"
-          spacing={3}
+          spacing={{ xs: 1, md: 3 }}
+          useFlexGap
           sx={{ mt: 4, flexWrap: 'wrap', justifyContent: 'center' }}
         >
           {homeData.skills.map((skill, index) => {
             const color = categoryColors[skill.category] ?? '#3d5afe'
             return (
               <Grow key={skill.id} in={isVisible} timeout={400 + index * 100}>
-                <Stack spacing={1} sx={{ width: 84, alignItems: 'center' }}>
+                <Stack spacing={{ xs: 0.5, md: 1 }} sx={{ width: { xs: 64, md: 84 }, alignItems: 'center' }}>
                   <Box
                     sx={{
-                      width: 56,
-                      height: 56,
+                      width: { xs: 48, md: 56 },
+                      height: { xs: 48, md: 56 },
                       borderRadius: '50%',
                       display: 'flex',
                       alignItems: 'center',
@@ -51,9 +52,12 @@ function SkillTreeSection() {
                       bgcolor: alpha(color, 0.12),
                     }}
                   >
-                    <SkillIcon icon={skill.icon} color={color} />
+                    <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 18, md: 28 } }} />
                   </Box>
-                  <Typography variant="body2" sx={{ fontWeight: 600, textAlign: 'center' }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, textAlign: 'center', fontSize: { xs: '0.68rem', md: '0.875rem' } }}
+                  >
                     {skill.name}
                   </Typography>
                 </Stack>
