@@ -16,6 +16,7 @@ import PersonIcon from '@mui/icons-material/Person'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import EmailIcon from '@mui/icons-material/Email'
+import NearMeIcon from '@mui/icons-material/NearMe'
 import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
 import { categoryColors } from '../data/skillsData.js'
@@ -46,6 +47,16 @@ const blink = keyframes`
   50% { opacity: 0; }
 `
 
+const swirlSwayA = keyframes`
+  0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+  50% { transform: translate(22px, -14px) rotate(1.5deg); }
+`
+
+const swirlSwayB = keyframes`
+  0%, 100% { transform: translate(0px, 0px) rotate(0deg); }
+  50% { transform: translate(-18px, 12px) rotate(-1.3deg); }
+`
+
 const HEADLINE_LINE1 = [
   { text: '다양한 경험을 ', gradient: false },
   { text: '하나의 서비스로', gradient: true },
@@ -58,37 +69,6 @@ const HEADLINE_LINE2_LENGTH = HEADLINE_LINE2.reduce((sum, part) => sum + part.te
 const HEADLINE_TOTAL_LENGTH = HEADLINE_LINE1_LENGTH + HEADLINE_LINE2_LENGTH
 const HEADLINE_FULL_TEXT = '다양한 경험을 하나의 서비스로 연결하는 개발자입니다'
 
-const ORBIT_POSITIONS = [
-  { top: '2%', left: '8%' },
-  { top: '6%', right: '2%' },
-  { bottom: '10%', left: '0%' },
-  { bottom: '2%', right: '12%' },
-]
-
-const CIRCUIT_SVG = `
-<svg xmlns='http://www.w3.org/2000/svg' width='88' height='88' viewBox='0 0 88 88'>
-  <g fill='none' stroke='rgba(66,114,246,0.22)' stroke-width='1.4'>
-    <path d='M0 22 H26 V6 H52 V22 H88'/>
-    <path d='M52 22 V44 H26 V66 H0'/>
-    <path d='M52 44 H88'/>
-    <path d='M26 66 V88'/>
-    <path d='M70 44 V70 H44 V88'/>
-  </g>
-  <g fill='rgba(66,114,246,0.4)'>
-    <circle cx='26' cy='22' r='2.4'/>
-    <circle cx='52' cy='6' r='2.4'/>
-    <circle cx='52' cy='22' r='2.4'/>
-    <circle cx='52' cy='44' r='2.4'/>
-    <circle cx='26' cy='44' r='2.4'/>
-    <circle cx='26' cy='66' r='2.4'/>
-    <circle cx='70' cy='44' r='2.4'/>
-    <circle cx='70' cy='70' r='2.4'/>
-    <circle cx='44' cy='70' r='2.4'/>
-  </g>
-</svg>
-`.trim()
-
-const CIRCUIT_BACKGROUND = `url("data:image/svg+xml,${encodeURIComponent(CIRCUIT_SVG)}")`
 
 function HeroSection() {
   const { aboutMeData, homeData } = usePortfolio()
@@ -181,50 +161,76 @@ function HeroSection() {
       sx={{
         position: 'relative',
         overflow: 'hidden',
-        pt: { xs: 6, sm: 8, md: 10, lg: 12 },
-        pb: { xs: 3, sm: 4, md: 5, lg: 6 },
+        pt: { xs: 6, sm: 8, md: 10 },
+        pb: { xs: 3, sm: 4, md: 4 },
+        minHeight: { md: '94svh' },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         background: 'linear-gradient(160deg, #eef1fb 0%, #f4f6fb 55%, #ffffff 100%)',
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: CIRCUIT_BACKGROUND,
-          backgroundSize: '88px 88px',
-          maskImage: 'radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, transparent 75%)',
-          pointerEvents: 'none',
-        },
       }}
     >
       <Box
         aria-hidden="true"
+        component="svg"
+        viewBox="0 0 800 600"
+        preserveAspectRatio="xMidYMid slice"
         sx={{
           position: 'absolute',
-          top: -80,
-          right: -60,
-          width: 320,
-          height: 320,
-          borderRadius: '50%',
-          bgcolor: 'primary.light',
-          filter: 'blur(70px)',
-          opacity: 0.7,
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          filter: 'blur(20px)',
         }}
-      />
-      <Box
-        aria-hidden="true"
-        sx={{
-          position: 'absolute',
-          bottom: -100,
-          left: -80,
-          width: 280,
-          height: 280,
-          borderRadius: '50%',
-          bgcolor: alpha('#7c9bff', 0.35),
-          filter: 'blur(80px)',
-        }}
-      />
+      >
+        <defs>
+          <linearGradient id="heroSwirlA" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#4272f6" stopOpacity="0.45" />
+            <stop offset="55%" stopColor="#8fa8ff" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="#c8b6ff" stopOpacity="0.12" />
+          </linearGradient>
+          <linearGradient id="heroSwirlB" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#c8b6ff" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="#eef1fb" stopOpacity="0.05" />
+          </linearGradient>
+        </defs>
+        <Box
+          component="g"
+          sx={{ transformBox: 'fill-box', transformOrigin: '50% 50%', animation: `${swirlSwayA} 19s ease-in-out infinite` }}
+        >
+          <path
+            d="M -80 460 C 140 260, 300 540, 500 320 C 660 150, 800 260, 920 90"
+            fill="none"
+            stroke="url(#heroSwirlA)"
+            strokeWidth="130"
+            strokeLinecap="round"
+          />
+        </Box>
+        <Box
+          component="g"
+          sx={{ transformBox: 'fill-box', transformOrigin: '50% 50%', animation: `${swirlSwayB} 23s ease-in-out infinite 1.5s` }}
+        >
+          <path
+            d="M -60 340 C 160 160, 320 420, 540 220 C 680 100, 780 170, 900 40"
+            fill="none"
+            stroke="url(#heroSwirlB)"
+            strokeWidth="70"
+            strokeLinecap="round"
+          />
+        </Box>
+      </Box>
 
-      <Container maxWidth="lg" sx={{ position: 'relative', px: { xs: 3, sm: 4 } }}>
-        <Grid container spacing={{ xs: 5, sm: 6, md: 4 }} sx={{ alignItems: 'center' }}>
+      <Container
+        maxWidth="lg"
+        sx={{
+          position: 'relative',
+          px: { xs: 3, sm: 4 },
+          display: 'flex',
+          alignItems: 'center',
+          flexGrow: { md: 1 },
+        }}
+      >
+        <Grid container spacing={{ xs: 5, sm: 6, md: 4 }} sx={{ alignItems: 'center', width: '100%' }}>
           <Grid size={{ xs: 12, md: 7 }}>
             <Stack spacing={{ xs: 2, sm: 2.5 }} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
               <Stack
@@ -255,11 +261,11 @@ function HeroSection() {
                 sx={{
                   fontFamily: '"Pretendard Variable", Pretendard, system-ui, sans-serif',
                   fontWeight: 800,
-                  fontSize: { xs: '1.5rem', sm: '2rem', md: '2.4rem', lg: '2.75rem' },
+                  fontSize: { xs: '1.5rem', sm: '2rem', md: '2.7rem', lg: '3.1rem' },
                   lineHeight: 1.35,
                   letterSpacing: '-0.5px',
-                  maxWidth: 640,
-                  minHeight: { xs: '4.1rem', sm: '5.6rem', md: '6.5rem', lg: '7.2rem' },
+                  maxWidth: 700,
+                  minHeight: { xs: '4.1rem', sm: '5.6rem', md: '7.3rem', lg: '8.4rem' },
                   wordBreak: 'keep-all',
                   color: 'text.primary',
                 }}
@@ -280,14 +286,14 @@ function HeroSection() {
               <Typography
                 sx={{
                   color: 'text.secondary',
-                  maxWidth: 520,
-                  fontSize: { xs: '0.9rem', sm: '0.98rem', md: '1.05rem' },
+                  maxWidth: 560,
+                  fontSize: { xs: '0.9rem', sm: '0.98rem', md: '1.15rem' },
                   lineHeight: 1.7,
                   wordBreak: 'keep-all',
                   animation: `${fadeInUp} 0.6s ease-out 0.2s both`,
                 }}
               >
-                하나의 아이디어를 완성도 있는 결과로 만들어가는 과정을 즐기며, 배움을 실력으로 연결합니다.
+                하나의 아이디어를 완성도 있는 결과로 만들어가는 과정을 즐기며, 작은 디테일 하나까지 놓치지 않으려 합니다.
               </Typography>
 
               <Stack
@@ -426,33 +432,89 @@ function HeroSection() {
                 </Box>
               </Avatar>
 
-              {orbitSkills.map((skill, index) => {
-                const color = categoryColors[skill.category] ?? '#3d5afe'
-                const position = ORBIT_POSITIONS[index % ORBIT_POSITIONS.length]
-                return (
-                  <Box
-                    key={skill.id}
-                    title={skill.name}
-                    sx={{
-                      position: 'absolute',
-                      ...position,
-                      width: { xs: 44, sm: 50, md: 56 },
-                      height: { xs: 44, sm: 50, md: 56 },
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      bgcolor: 'background.default',
-                      boxShadow: 3,
-                      animation: `${float} ${3 + index * 0.4}s ease-in-out ${index * 0.3}s infinite`,
-                      transition: 'transform 0.2s ease',
-                      '&:hover': { transform: 'scale(1.1)' },
-                    }}
-                  >
-                    <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 20, md: 26 } }} />
-                  </Box>
-                )
-              })}
+              <Box
+                aria-hidden="true"
+                sx={{
+                  position: 'absolute',
+                  top: { xs: '42%', md: '46%' },
+                  left: { xs: '-22%', md: '-42%' },
+                  width: { xs: 90, md: 130 },
+                  height: { xs: 90, md: 130 },
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+              >
+                <NearMeIcon
+                  sx={{
+                    fontSize: { xs: 56, md: 78 },
+                    color: '#4272f6',
+                    transform: 'rotate(-70deg)',
+                    filter: 'drop-shadow(0 6px 16px rgba(66,114,246,0.35))',
+                    transition: 'color 0.35s ease, filter 0.35s ease, transform 0.35s ease',
+                    '&:hover': {
+                      color: '#2c50c9',
+                      transform: 'rotate(-70deg) scale(1.08)',
+                      filter:
+                        'drop-shadow(0 0 10px rgba(66,114,246,0.85)) drop-shadow(0 0 28px rgba(143,168,255,0.65)) drop-shadow(0 0 52px rgba(200,182,255,0.45))',
+                    },
+                  }}
+                />
+              </Box>
+
+              <Box
+                sx={{
+                  position: 'absolute',
+                  bottom: { xs: '2%', md: '4%' },
+                  right: { xs: '-8%', md: '-14%' },
+                  width: { xs: 96, sm: 110, md: 128 },
+                  height: { xs: 96, sm: 110, md: 128 },
+                }}
+              >
+                {orbitSkills.map((skill, index) => {
+                  const color = categoryColors[skill.category] ?? '#3d5afe'
+                  const stackPositions = [
+                    { top: 0, left: 0 },
+                    { top: '18%', left: '32%' },
+                    { top: '38%', left: '4%' },
+                    { top: '54%', left: '38%' },
+                  ]
+                  const rotations = [-9, 6, -5, 11]
+                  const stackPos = stackPositions[index % stackPositions.length]
+                  const rotate = rotations[index % rotations.length]
+                  return (
+                    <Box
+                      key={skill.id}
+                      title={skill.name}
+                      sx={{
+                        position: 'absolute',
+                        ...stackPos,
+                        zIndex: index,
+                        transform: `rotate(${rotate}deg)`,
+                        transition: 'transform 0.25s ease',
+                        '&:hover': { transform: 'rotate(0deg) scale(1.1)', zIndex: 10 },
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          width: { xs: 42, sm: 46, md: 52 },
+                          height: { xs: 42, sm: 46, md: 52 },
+                          borderRadius: '20%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          bgcolor: 'background.paper',
+                          boxShadow: '0 12px 20px -8px rgba(20,24,43,0.28), 0 1px 2px rgba(20,24,43,0.08)',
+                          animation: `${float} ${3.4 + index * 0.3}s ease-in-out ${index * 0.25}s infinite`,
+                        }}
+                      >
+                        <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 18, md: 22 } }} />
+                      </Box>
+                    </Box>
+                  )
+                })}
+              </Box>
             </Box>
           </Grid>
         </Grid>

@@ -8,6 +8,7 @@ import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
+import Divider from '@mui/material/Divider'
 import Grow from '@mui/material/Grow'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
@@ -251,24 +252,25 @@ function GuestbookSection() {
           </Grid>
         </Grid>
 
+        <Divider sx={{ mt: 7, mb: 4 }} />
+
+        <Typography sx={{ fontWeight: 700, fontSize: '1.3rem', color: 'text.primary' }}>방명록</Typography>
+
         <Stack
           direction={{ xs: 'column', sm: 'row' }}
           spacing={2}
           sx={{
-            mt: 7,
+            mt: 1.5,
             mb: 3,
             justifyContent: 'space-between',
             alignItems: { xs: 'flex-start', sm: 'center' },
           }}
         >
-          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-            <Typography variant="h6">방명록</Typography>
-            <Chip
-              label={`${entries.length}개`}
-              size="small"
-              sx={{ bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
-            />
-          </Stack>
+          <Chip
+            label={`${entries.length}개`}
+            size="small"
+            sx={{ bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
+          />
           <Button variant="contained" startIcon={<EditIcon />} onClick={() => setFormOpen(true)}>
             방명록 남기기
           </Button>

@@ -74,6 +74,9 @@ const theme = createTheme({
     },
     MuiCssBaseline: {
       styleOverrides: {
+        html: {
+          scrollbarGutter: 'stable',
+        },
         '@media (prefers-reduced-motion: reduce)': {
           '*, *::before, *::after': {
             animationDuration: '0.01ms !important',

@@ -6,7 +6,6 @@ import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
@@ -67,13 +66,10 @@ function AboutMe() {
             <Typography variant="h5" sx={{ fontWeight: 700, color: 'text.primary' }}>
               {basicInfo.name}
             </Typography>
-            <Stack direction="row" spacing={1} sx={{ mt: 2, justifyContent: 'center' }}>
-              <Chip label={basicInfo.experience} size="small" color="primary" variant="outlined" />
-            </Stack>
             <Stack
               direction="row"
               spacing={0.5}
-              sx={{ mt: 1.5, justifyContent: 'center', alignItems: 'center', color: 'text.secondary' }}
+              sx={{ mt: 2, justifyContent: 'center', alignItems: 'center', color: 'text.secondary' }}
             >
               <LocationOnIcon fontSize="small" aria-hidden="true" />
               <Typography variant="body2">Busan, South Korea</Typography>

@@ -1,4 +1,7 @@
-import { Link as RouterLink, NavLink } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link as RouterLink, NavLink, useLocation } from 'react-router-dom'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -12,8 +15,31 @@ const TABS = [
 ]
 
 function Nav() {
+  const { pathname } = useLocation()
+  const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('md'))
+  const overlay = pathname === '/' && isDesktop
+  const [scrolled, setScrolled] = useState(false)
+
+  useEffect(() => {
+    if (!overlay) return undefined
+    const handleScroll = () => setScrolled(window.scrollY > 40)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [overlay])
+
+  const transparent = overlay && !scrolled
+
   return (
-    <AppBar position="sticky">
+    <AppBar
+      position={overlay ? 'fixed' : 'sticky'}
+      sx={{
+        bgcolor: transparent ? 'transparent' : '#ffffff',
+        borderBottom: transparent ? 'none' : '1px solid #e4e6ea',
+        transition: 'background-color 0.25s ease, border-color 0.25s ease',
+      }}
+    >
       <Toolbar
         sx={{
           maxWidth: 1126,
