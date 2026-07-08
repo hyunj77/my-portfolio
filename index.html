@@ -5,6 +5,21 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Portfolio</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('portfolio-color-mode');
+          var mode =
+            saved === 'dark' || saved === 'light'
+              ? saved
+              : window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light';
+          document.documentElement.setAttribute('data-theme', mode);
+          document.documentElement.style.backgroundColor = mode === 'dark' ? '#0f1117' : '#ffffff';
+        } catch (e) {}
+      })();
+    </script>
     <link
       rel="stylesheet"
       as="style"

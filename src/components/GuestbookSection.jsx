@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { keyframes } from '@mui/material/styles'
+import { useEffect, useMemo, useState } from 'react'
+import { alpha, keyframes, useTheme } from '@mui/material/styles'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -23,12 +23,14 @@ import EmailIcon from '@mui/icons-material/Email'
 import CloseIcon from '@mui/icons-material/Close'
 import EditIcon from '@mui/icons-material/Edit'
 import SectionHeader from './SectionHeader.jsx'
+import LoadingSpinner from './LoadingSpinner.jsx'
 import { supabase } from '../lib/supabase.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
+import { brandTints, brandTintsDark } from '../theme.js'
+import { useColorMode } from '../context/ColorModeContext.jsx'
 
 const EMOJIS = ['👋', '😊', '🔥', '💪', '✨', '🚀', '🌟', '💡']
 const MESSAGE_LIMIT = 500
-const ACCENTS = ['#8fa8ff', '#4272f6', '#6b8bff', '#20242b']
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(24px); }
@@ -52,6 +54,13 @@ function GuestbookSection() {
   const [submitting, setSubmitting] = useState(false)
   const [revealRef, isVisible] = useScrollReveal()
   const [error, setError] = useState('')
+  const theme = useTheme()
+  const { mode } = useColorMode()
+  const tints = mode === 'dark' ? brandTintsDark : brandTints
+  const ACCENTS = useMemo(
+    () => [tints.accentBlueSoft, theme.palette.primary.main, tints.accentBlueMuted, theme.palette.text.primary],
+    [tints, theme],
+  )
 
   async function loadEntries() {
     const { data, error: fetchError } = await supabase
@@ -115,7 +124,7 @@ function GuestbookSection() {
         position: 'relative',
         overflow: 'hidden',
         py: { xs: 6, md: 9 },
-        bgcolor: '#eef1fb',
+        bgcolor: tints.wash,
         scrollMarginTop: 72,
       }}
     >
@@ -130,7 +139,7 @@ function GuestbookSection() {
           color: 'primary.main',
           opacity: 0.08,
           transform: 'translate(-50%, -50%) rotate(-6deg)',
-          filter: 'drop-shadow(0 0 18px rgba(66,114,246,0.3)) drop-shadow(0 0 36px rgba(245,228,42,0.18))',
+          filter: `drop-shadow(0 0 18px ${alpha(theme.palette.primary.main, 0.3)}) drop-shadow(0 0 36px ${alpha(theme.palette.secondary.main, 0.18)})`,
           pointerEvents: 'none',
         }}
       >
@@ -155,7 +164,7 @@ function GuestbookSection() {
           animation: isVisible ? `${fadeInUp} 0.6s ease-out both` : 'none',
         }}
       >
-        <SectionHeader title="Contact" underlineColor="rgba(66,114,246,0.15)" />
+        <SectionHeader title="Contact" underlineColor={alpha(theme.palette.primary.main, 0.15)} animate={isVisible} />
         <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="h4" sx={{ fontSize: '1.8rem' }}>
             여기까지 와주셔서 반가워요 🌱
@@ -269,7 +278,7 @@ function GuestbookSection() {
           <Chip
             label={`${entries.length}개`}
             size="small"
-            sx={{ bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
+            sx={{ bgcolor: alpha(theme.palette.primary.main, 0.15), color: 'primary.dark' }}
           />
           <Button variant="contained" startIcon={<EditIcon />} onClick={() => setFormOpen(true)}>
             방명록 남기기
@@ -277,7 +286,9 @@ function GuestbookSection() {
         </Stack>
 
         {status === 'loading' && (
-          <Typography sx={{ color: 'text.secondary' }}>불러오는 중...</Typography>
+          <Box sx={{ py: 3 }}>
+            <LoadingSpinner />
+          </Box>
         )}
         {status === 'error' && (
           <Typography sx={{ color: 'text.secondary' }}>방명록을 불러오지 못했습니다.</Typography>

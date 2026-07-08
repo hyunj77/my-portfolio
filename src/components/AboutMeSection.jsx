@@ -10,13 +10,14 @@ import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import Grow from '@mui/material/Grow'
 import Stack from '@mui/material/Stack'
+import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
 import PersonIcon from '@mui/icons-material/Person'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import SectionHeader from './SectionHeader.jsx'
 import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { categoryColors } from '../data/skillsData.js'
+import { DEFAULT_SKILL_COLOR, categoryColors } from '../data/skillsData.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const fadeInUp = keyframes`
@@ -40,7 +41,7 @@ function AboutMeSection() {
         maxWidth="md"
         sx={{ opacity: isVisible ? 1 : 0, animation: isVisible ? `${fadeInUp} 0.6s ease-out both` : 'none' }}
       >
-        <SectionHeader title="About Me" light />
+        <SectionHeader title="About Me" light animate={isVisible} />
 
         <Grid container spacing={3} sx={{ mt: 4 }}>
           <Grid size={{ xs: 12, md: 7 }}>
@@ -85,23 +86,39 @@ function AboutMeSection() {
           <CardContent sx={{ p: { xs: 1.5, md: 4 } }}>
             <Stack direction="row" spacing={{ xs: 0.75, md: 3 }} useFlexGap sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
               {skills.map((skill, index) => {
-                const color = categoryColors[skill.category] ?? '#3d5afe'
+                const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
                 return (
                   <Grow key={skill.id} in={isVisible} timeout={400 + index * 100}>
                     <Stack spacing={{ xs: 0.4, md: 0.75 }} sx={{ width: { xs: 40, md: 72 }, alignItems: 'center' }}>
-                      <Box
-                        sx={{
-                          width: { xs: 32, md: 44 },
-                          height: { xs: 32, md: 44 },
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          bgcolor: alpha(color, 0.12),
-                        }}
-                      >
-                        <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 16, md: 22 } }} />
-                      </Box>
+                      <Tooltip title={skill.description} arrow placement="top">
+                        <Box
+                          tabIndex={0}
+                          sx={{
+                            width: { xs: 32, md: 44 },
+                            height: { xs: 32, md: 44 },
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            bgcolor: alpha(color, 0.12),
+                            willChange: 'transform, box-shadow',
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            outline: 'none',
+                            '@media (hover: hover)': {
+                              '&:hover': {
+                                transform: 'rotate(12deg) scale(1.12)',
+                                boxShadow: `0 0 0 6px ${alpha(color, 0.16)}, 0 0 18px ${alpha(color, 0.55)}`,
+                              },
+                            },
+                            '&:focus-visible': {
+                              transform: 'rotate(12deg) scale(1.12)',
+                              boxShadow: `0 0 0 6px ${alpha(color, 0.16)}, 0 0 18px ${alpha(color, 0.55)}`,
+                            },
+                          }}
+                        >
+                          <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 16, md: 22 } }} />
+                        </Box>
+                      </Tooltip>
                       <Typography
                         variant="caption"
                         sx={{ fontWeight: 600, textAlign: 'center', fontSize: { xs: '0.68rem', md: '0.75rem' }, lineHeight: 1.2 }}

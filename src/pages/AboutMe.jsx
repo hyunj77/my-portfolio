@@ -16,6 +16,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import SectionHeader from '../components/SectionHeader.jsx'
 import SkillsSection from '../components/SkillsSection.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
+import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(16px); }
@@ -26,6 +27,7 @@ function AboutMe() {
   const { aboutMeData } = usePortfolio()
   const { basicInfo, sections } = aboutMeData
   const [expandedId, setExpandedId] = useState(sections[0]?.id ?? false)
+  const [revealRef, isVisible] = useScrollReveal()
 
   const handleAccordionChange = useCallback(
     (sectionId) => (event, isExpanded) => {
@@ -36,8 +38,8 @@ function AboutMe() {
 
   return (
     <Box component="section" sx={{ py: { xs: 6, md: 10 } }}>
-      <Container maxWidth="md">
-        <SectionHeader title="About Me" />
+      <Container ref={revealRef} maxWidth="md">
+        <SectionHeader title="About Me" animate={isVisible} />
 
         <Card
           variant="outlined"
@@ -46,7 +48,8 @@ function AboutMe() {
             maxWidth: 720,
             mx: 'auto',
             bgcolor: 'background.paper',
-            animation: `${fadeInUp} 0.5s ease-out both`,
+            opacity: isVisible ? 1 : 0,
+            animation: isVisible ? `${fadeInUp} 0.5s ease-out both` : 'none',
           }}
         >
           <CardContent sx={{ p: { xs: 2.5, sm: 3, md: 5 }, textAlign: 'center' }}>
@@ -88,7 +91,8 @@ function AboutMe() {
                 mb: 2,
                 '&:before': { display: 'none' },
                 bgcolor: 'background.paper',
-                animation: `${fadeInUp} 0.5s ease-out ${index * 0.1}s both`,
+                opacity: isVisible ? 1 : 0,
+                animation: isVisible ? `${fadeInUp} 0.5s ease-out ${index * 0.1}s both` : 'none',
               }}
             >
               <AccordionSummary expandIcon={<ExpandMoreIcon aria-hidden="true" />}>

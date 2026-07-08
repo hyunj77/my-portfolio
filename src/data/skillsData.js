@@ -57,6 +57,8 @@ export const initialSkillsData = [
   },
 ]
 
+export const DEFAULT_SKILL_COLOR = '#3d5afe'
+
 export const categoryColors = {
   Frontend: '#5c6bc0',
   Framework: '#26a69a',

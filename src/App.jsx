@@ -4,6 +4,9 @@ import Box from '@mui/material/Box'
 import Nav from './components/Nav.jsx'
 import Home from './pages/Home.jsx'
 import Footer from './components/Footer.jsx'
+import ScrollProgressBar from './components/ScrollProgressBar.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
+import CustomCursor from './components/CustomCursor.jsx'
 
 const AboutMe = lazy(() => import('./pages/AboutMe.jsx'))
 const Projects = lazy(() => import('./pages/Projects.jsx'))
@@ -11,6 +14,9 @@ const Projects = lazy(() => import('./pages/Projects.jsx'))
 function App() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100svh' }}>
+      <CustomCursor />
+      <ScrollProgressBar />
+      <ScrollToTop />
       <Nav />
       <Box component="main" sx={{ flex: 1 }}>
         <Suspense fallback={null}>

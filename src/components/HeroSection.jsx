@@ -5,7 +5,6 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Chip from '@mui/material/Chip'
 import Container from '@mui/material/Container'
 import Grid from '@mui/material/Grid'
 import IconButton from '@mui/material/IconButton'
@@ -18,8 +17,12 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import EmailIcon from '@mui/icons-material/Email'
 import NearMeIcon from '@mui/icons-material/NearMe'
 import SkillIcon from './SkillIcon.jsx'
+import RoleTypewriter from './RoleTypewriter.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { categoryColors } from '../data/skillsData.js'
+import { DEFAULT_SKILL_COLOR, categoryColors } from '../data/skillsData.js'
+import { brandTints, brandTintsDark } from '../theme.js'
+import { useParallax } from '../hooks/useParallax.js'
+import { useColorMode } from '../context/ColorModeContext.jsx'
 
 const fadeInUp = keyframes`
   from { opacity: 0; transform: translateY(18px); }
@@ -31,10 +34,12 @@ const float = keyframes`
   50% { transform: translateY(-10px); }
 `
 
+// 모듈 스코프 keyframes라 라이브 테마를 못 받아서, 라이트/다크 어디서든 무난한
+// 고정 블루 값을 그대로 쓴다 (아바타 주변 은은한 펄스 글로우라 큰 영향 없음).
 const pulseRing = keyframes`
-  0% { box-shadow: 0 0 0 0 rgba(66, 114, 246, 0.35); }
-  70% { box-shadow: 0 0 0 18px rgba(66, 114, 246, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(66, 114, 246, 0); }
+  0% { box-shadow: 0 0 0 0 ${alpha('#4272f6', 0.35)}; }
+  70% { box-shadow: 0 0 0 18px ${alpha('#4272f6', 0)}; }
+  100% { box-shadow: 0 0 0 0 ${alpha('#4272f6', 0)}; }
 `
 
 const bounce = keyframes`
@@ -77,6 +82,10 @@ function HeroSection() {
   const [typedLength, setTypedLength] = useState(0)
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+  const bgParallaxRef = useParallax(0.12)
+  const avatarParallaxRef = useParallax(-0.08)
+  const { mode } = useColorMode()
+  const tints = mode === 'dark' ? brandTintsDark : brandTints
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -112,7 +121,7 @@ function HeroSection() {
           key={index}
           component="span"
           sx={{
-            backgroundImage: 'linear-gradient(90deg, #4272f6, #7c9bff)',
+            backgroundImage: `linear-gradient(90deg, ${theme.palette.primary.main}, ${tints.accentBlue})`,
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',
             color: 'transparent',
@@ -157,6 +166,7 @@ function HeroSection() {
 
   return (
     <Box
+      id="hero"
       component="section"
       sx={{
         position: 'relative',
@@ -167,10 +177,11 @@ function HeroSection() {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        background: 'linear-gradient(160deg, #eef1fb 0%, #f4f6fb 55%, #ffffff 100%)',
+        background: `linear-gradient(160deg, ${tints.wash} 0%, ${tints.washSoft} 55%, ${theme.palette.background.default} 100%)`,
       }}
     >
       <Box
+        ref={bgParallaxRef}
         aria-hidden="true"
         component="svg"
         viewBox="0 0 800 600"
@@ -181,17 +192,19 @@ function HeroSection() {
           width: '100%',
           height: '100%',
           filter: 'blur(20px)',
+          transform: 'translate3d(0, calc(var(--parallax-y, 0) * 1px), 0)',
+          willChange: 'transform',
         }}
       >
         <defs>
           <linearGradient id="heroSwirlA" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#4272f6" stopOpacity="0.45" />
-            <stop offset="55%" stopColor="#8fa8ff" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#c8b6ff" stopOpacity="0.12" />
+            <stop offset="0%" stopColor={theme.palette.primary.main} stopOpacity="0.45" />
+            <stop offset="55%" stopColor={tints.accentBlueSoft} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={tints.accentLavender} stopOpacity="0.12" />
           </linearGradient>
           <linearGradient id="heroSwirlB" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#c8b6ff" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#eef1fb" stopOpacity="0.05" />
+            <stop offset="0%" stopColor={tints.accentLavender} stopOpacity="0.35" />
+            <stop offset="100%" stopColor={tints.wash} stopOpacity="0.05" />
           </linearGradient>
         </defs>
         <Box
@@ -233,26 +246,14 @@ function HeroSection() {
         <Grid container spacing={{ xs: 5, sm: 6, md: 4 }} sx={{ alignItems: 'center', width: '100%' }}>
           <Grid size={{ xs: 12, md: 7 }}>
             <Stack spacing={{ xs: 2, sm: 2.5 }} sx={{ textAlign: { xs: 'center', md: 'left' }, alignItems: { xs: 'center', md: 'flex-start' } }}>
-              <Stack
-                direction="row"
-                spacing={1}
+              <Box
                 sx={{
-                  flexWrap: 'wrap',
-                  justifyContent: { xs: 'center', md: 'flex-start' },
+                  fontSize: { xs: '1.05rem', sm: '1.15rem', md: '1.3rem' },
                   animation: `${fadeInUp} 0.6s ease-out both`,
                 }}
               >
-                <Chip
-                  label="Web Designer"
-                  size="small"
-                  sx={{ fontWeight: 700, letterSpacing: 0.5, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
-                />
-                <Chip
-                  label="AI Builder"
-                  size="small"
-                  sx={{ fontWeight: 700, letterSpacing: 0.5, bgcolor: 'rgba(66,114,246,0.15)', color: 'primary.dark' }}
-                />
-              </Stack>
+                <RoleTypewriter />
+              </Box>
 
               <Typography
                 variant="h3"
@@ -393,6 +394,13 @@ function HeroSection() {
 
           <Grid size={{ xs: 12, md: 5 }}>
             <Box
+              ref={avatarParallaxRef}
+              sx={{
+                transform: 'translate3d(0, calc(var(--parallax-y, 0) * 1px), 0)',
+                willChange: 'transform',
+              }}
+            >
+            <Box
               sx={{
                 position: 'relative',
                 width: { xs: 220, sm: 280, md: 320 },
@@ -448,15 +456,18 @@ function HeroSection() {
                 <NearMeIcon
                   sx={{
                     fontSize: { xs: 56, md: 78 },
-                    color: '#4272f6',
+                    color: 'primary.main',
                     transform: 'rotate(-70deg)',
-                    filter: 'drop-shadow(0 6px 16px rgba(66,114,246,0.35))',
+                    filter: `drop-shadow(0 6px 16px ${alpha(theme.palette.primary.main, 0.35)})`,
                     transition: 'color 0.35s ease, filter 0.35s ease, transform 0.35s ease',
                     '&:hover': {
-                      color: '#2c50c9',
+                      color: 'primary.dark',
                       transform: 'rotate(-70deg) scale(1.08)',
-                      filter:
-                        'drop-shadow(0 0 10px rgba(66,114,246,0.85)) drop-shadow(0 0 28px rgba(143,168,255,0.65)) drop-shadow(0 0 52px rgba(200,182,255,0.45))',
+                      filter: [
+                        `drop-shadow(0 0 10px ${alpha(theme.palette.primary.main, 0.85)})`,
+                        `drop-shadow(0 0 28px ${alpha(tints.accentBlueSoft, 0.65)})`,
+                        `drop-shadow(0 0 52px ${alpha(tints.accentLavender, 0.45)})`,
+                      ].join(' '),
                     },
                   }}
                 />
@@ -472,7 +483,7 @@ function HeroSection() {
                 }}
               >
                 {orbitSkills.map((skill, index) => {
-                  const color = categoryColors[skill.category] ?? '#3d5afe'
+                  const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
                   const stackPositions = [
                     { top: 0, left: 0 },
                     { top: '18%', left: '32%' },
@@ -514,6 +525,7 @@ function HeroSection() {
                   )
                 })}
               </Box>
+            </Box>
             </Box>
           </Grid>
         </Grid>

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { alpha } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
@@ -11,6 +12,8 @@ import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
+import { DEFAULT_SKILL_COLOR } from '../data/skillsData.js'
+import { resolveThumbnailUrl } from '../data/thumbnailOverrides.js'
 
 function repoUrlFromDetailUrl(detailUrl) {
   const repoName = detailUrl?.replace(/\/$/, '').split('/').pop()
@@ -26,7 +29,7 @@ function TechBadges({ techStack }) {
           key={tech}
           label={tech}
           size="small"
-          sx={{ bgcolor: 'rgba(61,90,254,0.12)', color: 'primary.dark', fontWeight: 600 }}
+          sx={{ bgcolor: alpha(DEFAULT_SKILL_COLOR, 0.12), color: 'primary.dark', fontWeight: 600 }}
         />
       ))}
     </Stack>
@@ -34,21 +37,73 @@ function TechBadges({ techStack }) {
 }
 
 function ProjectCard({ project }) {
-  const { title, description, tech_stack: techStack, detail_url: detailUrl, thumbnail_url: thumbnailUrl } = project
+  const { title, description, tech_stack: techStack, detail_url: detailUrl } = project
   const [showDetails, setShowDetails] = useState(false)
   const githubUrl = repoUrlFromDetailUrl(detailUrl)
+  const thumbnailUrl = resolveThumbnailUrl(project)
 
   return (
-    <Card variant="outlined" sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <CardActionArea onClick={() => setShowDetails(true)} aria-label={`${title} 상세보기`}>
+    <Card
+      variant="outlined"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        willChange: 'transform',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        '@media (hover: hover)': {
+          '&:hover': { transform: 'translateY(-6px)', boxShadow: '0 20px 40px -18px rgba(32,36,43,0.35)' },
+        },
+        '&:focus-within': { transform: 'translateY(-6px)', boxShadow: '0 20px 40px -18px rgba(32,36,43,0.35)' },
+      }}
+    >
+      <CardActionArea
+        onClick={() => setShowDetails(true)}
+        aria-label={`${title} 상세보기`}
+        sx={{
+          position: 'relative',
+          overflow: 'hidden',
+          '@media (hover: hover)': {
+            '&:hover .project-thumb': { transform: 'scale(1.08)', filter: 'brightness(0.85) saturate(1.1)' },
+            '&:hover .project-overlay': { opacity: 1 },
+          },
+          '&.Mui-focusVisible .project-thumb': { transform: 'scale(1.08)', filter: 'brightness(0.85) saturate(1.1)' },
+          '&.Mui-focusVisible .project-overlay': { opacity: 1 },
+        }}
+      >
         <CardMedia
           component="img"
+          className="project-thumb"
           image={thumbnailUrl}
           alt={`${title} 메인 화면`}
           loading="lazy"
           decoding="async"
-          sx={{ aspectRatio: '1 / 1', objectFit: 'cover', objectPosition: 'top', bgcolor: 'primary.light' }}
+          sx={{
+            aspectRatio: '1 / 1',
+            objectFit: 'cover',
+            objectPosition: 'top',
+            bgcolor: 'primary.light',
+            willChange: 'transform, filter',
+            transition: 'transform 0.4s ease, filter 0.4s ease',
+          }}
         />
+        <Box
+          className="project-overlay"
+          aria-hidden="true"
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            display: 'flex',
+            alignItems: 'flex-end',
+            p: 2,
+            background: 'linear-gradient(180deg, transparent 45%, rgba(20,24,43,0.78) 100%)',
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+            pointerEvents: 'none',
+          }}
+        >
+          <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '0.9rem' }}>자세히 보기 →</Typography>
+        </Box>
       </CardActionArea>
       <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h6" sx={{ fontSize: '1.15rem' }}>
