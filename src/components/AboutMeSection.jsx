@@ -37,7 +37,7 @@ function AboutMeSection() {
         <Box sx={{ mt: 6, display: 'flex', gap: { xs: 2.5, md: 4 } }}>
           <Box sx={{ width: 3, flexShrink: 0, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.5)' }} />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Stack direction="row" spacing={1.5} alignItems="baseline" sx={{ mb: 2.5, flexWrap: 'wrap' }}>
+            <Stack direction="row" spacing={1.5} sx={{ alignItems: 'baseline', mb: 2.5, flexWrap: 'wrap' }}>
               <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>{basicInfo.name}</Typography>
               {basicInfo.experience && (
                 <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>{basicInfo.experience}</Typography>

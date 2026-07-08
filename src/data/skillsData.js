@@ -67,7 +67,24 @@ export const categoryColors = {
   '도구 & 기타': '#8d6e63',
 }
 
+// 다크 모드용 포인트 컬러 — 차콜 배경 위에서 선명하게 보이는 민트/시안 계열 위주.
+export const DEFAULT_SKILL_COLOR_DARK = '#2dd4bf'
+
+export const categoryColorsDark = {
+  Frontend: '#38bdf8',
+  Framework: '#2dd4bf',
+  Design: '#a78bfa',
+  Backend: '#4ade80',
+  '도구 & 기타': '#fb923c',
+}
+
 export const categoryOrder = ['Frontend', 'Framework', 'Design', 'Backend', '도구 & 기타']
+
+export function getCategoryColor(category, mode) {
+  const map = mode === 'dark' ? categoryColorsDark : categoryColors
+  const fallback = mode === 'dark' ? DEFAULT_SKILL_COLOR_DARK : DEFAULT_SKILL_COLOR
+  return map[category] ?? fallback
+}
 
 export function getSkillsSortedByLevel(skills) {
   return [...skills].sort((a, b) => (b.level ?? 0) - (a.level ?? 0))

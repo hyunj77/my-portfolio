@@ -12,7 +12,8 @@ import SectionHeader from './SectionHeader.jsx'
 import SkillIcon from './SkillIcon.jsx'
 import CircularSkillProgress from './CircularSkillProgress.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { DEFAULT_SKILL_COLOR, categoryColors, categoryOrder } from '../data/skillsData.js'
+import { useColorMode } from '../context/ColorModeContext.jsx'
+import { getCategoryColor, categoryOrder } from '../data/skillsData.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 import { useCountUp } from '../hooks/useCountUp.js'
 
@@ -45,7 +46,8 @@ const AnimatedLevelBar = memo(function AnimatedLevelBar({ level, color, active }
 })
 
 const SkillCard = memo(function SkillCard({ skill, active }) {
-  const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
+  const { mode } = useColorMode()
+  const color = getCategoryColor(skill.category, mode)
 
   return (
     <Tooltip title={skill.description} arrow placement="top">
@@ -124,6 +126,7 @@ const SkillCard = memo(function SkillCard({ skill, active }) {
 
 function SkillsSection() {
   const { aboutMeData } = usePortfolio()
+  const { mode } = useColorMode()
   const skills = aboutMeData.skills
   const [revealRef, isVisible] = useScrollReveal()
 
@@ -154,7 +157,7 @@ function SkillsSection() {
                     width: 10,
                     height: 10,
                     borderRadius: '50%',
-                    bgcolor: categoryColors[category] ?? DEFAULT_SKILL_COLOR,
+                    bgcolor: getCategoryColor(category, mode),
                   }}
                 />
                 <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>{category}</Typography>

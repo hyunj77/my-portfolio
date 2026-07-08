@@ -12,7 +12,8 @@ import IconButton from '@mui/material/IconButton'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import CloseIcon from '@mui/icons-material/Close'
-import { DEFAULT_SKILL_COLOR } from '../data/skillsData.js'
+import { useColorMode } from '../context/ColorModeContext.jsx'
+import { DEFAULT_SKILL_COLOR, DEFAULT_SKILL_COLOR_DARK } from '../data/skillsData.js'
 import { resolveThumbnailUrl } from '../data/thumbnailOverrides.js'
 
 function repoUrlFromDetailUrl(detailUrl) {
@@ -21,6 +22,8 @@ function repoUrlFromDetailUrl(detailUrl) {
 }
 
 function TechBadges({ techStack }) {
+  const { mode } = useColorMode()
+  const color = mode === 'dark' ? DEFAULT_SKILL_COLOR_DARK : DEFAULT_SKILL_COLOR
   if (!techStack?.length) return null
   return (
     <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', rowGap: 1, my: 1.5 }}>
@@ -29,7 +32,7 @@ function TechBadges({ techStack }) {
           key={tech}
           label={tech}
           size="small"
-          sx={{ bgcolor: alpha(DEFAULT_SKILL_COLOR, 0.12), color: 'primary.dark', fontWeight: 600 }}
+          sx={{ bgcolor: alpha(color, 0.12), color: 'primary.dark', fontWeight: 600 }}
         />
       ))}
     </Stack>

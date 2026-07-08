@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import Box from '@mui/material/Box'
-import { keyframes } from '@mui/material/styles'
+import { keyframes, useTheme } from '@mui/material/styles'
+import { useColorMode } from '../context/ColorModeContext.jsx'
+import { brandTints, brandTintsDark } from '../theme.js'
 
 const ROLES = ['Web Designer', 'AI Builder', 'Frontend Developer']
 const TYPE_SPEED = 90
@@ -23,6 +25,10 @@ function RoleTypewriter({ sx }) {
   const [roleIndex, setRoleIndex] = useState(0)
   const [text, setText] = useState('')
   const [phase, setPhase] = useState('typing')
+  const theme = useTheme()
+  const { mode } = useColorMode()
+  const tints = mode === 'dark' ? brandTintsDark : brandTints
+  const gradient = [theme.palette.primary.main, tints.accentBlueSoft, tints.accentLavender, theme.palette.primary.main].join(', ')
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -62,7 +68,7 @@ function RoleTypewriter({ sx }) {
           display: 'inline-block',
           minWidth: '1ch',
           fontWeight: 800,
-          backgroundImage: 'linear-gradient(90deg, #4272f6, #8fa8ff, #c8b6ff, #4272f6)',
+          backgroundImage: `linear-gradient(90deg, ${gradient})`,
           backgroundSize: '300% 100%',
           backgroundClip: 'text',
           WebkitBackgroundClip: 'text',

@@ -19,7 +19,7 @@ import NearMeIcon from '@mui/icons-material/NearMe'
 import SkillIcon from './SkillIcon.jsx'
 import RoleTypewriter from './RoleTypewriter.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { DEFAULT_SKILL_COLOR, categoryColors } from '../data/skillsData.js'
+import { getCategoryColor } from '../data/skillsData.js'
 import { brandTints, brandTintsDark } from '../theme.js'
 import { useParallax } from '../hooks/useParallax.js'
 import { useColorMode } from '../context/ColorModeContext.jsx'
@@ -483,7 +483,7 @@ function HeroSection() {
                 }}
               >
                 {orbitSkills.map((skill, index) => {
-                  const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
+                  const color = getCategoryColor(skill.category, mode)
                   const stackPositions = [
                     { top: 0, left: 0 },
                     { top: '18%', left: '32%' },

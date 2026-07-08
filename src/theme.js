@@ -12,15 +12,15 @@ export const brandTints = {
   navBorder: '#e4e6ea',
 }
 
-// 다크 모드용 동일 역할의 색조.
+// 다크 모드용 동일 역할의 색조 — 차콜 베이스 + 민트/시안 포인트.
 export const brandTintsDark = {
-  accentBlue: '#5f7fe0',
-  accentBlueSoft: '#4a5f9e',
-  accentBlueMuted: '#3d4f82',
-  accentLavender: '#4a4270',
-  wash: '#141726',
-  washSoft: '#1a1f33',
-  navBorder: '#2a2f42',
+  accentBlue: '#2dd4bf',
+  accentBlueSoft: '#5eead4',
+  accentBlueMuted: '#0d9488',
+  accentLavender: '#67e8f9',
+  wash: '#111817',
+  washSoft: '#16201f',
+  navBorder: '#263230',
 }
 
 const palettes = {
@@ -31,10 +31,10 @@ const palettes = {
     text: { primary: '#20242b', secondary: '#6b7280' },
   },
   dark: {
-    primary: { main: '#7c9bff', light: '#26325c', dark: '#c8d4ff', contrastText: '#0b0e1a' },
+    primary: { main: '#2dd4bf', light: '#123c38', dark: '#5eead4', contrastText: '#0a1615' },
     secondary: { main: '#f5e42a', dark: '#d9c400', contrastText: '#2c2a00' },
-    background: { default: '#0f1117', paper: '#171a22' },
-    text: { primary: '#eef1fb', secondary: '#9aa3b5' },
+    background: { default: '#14181a', paper: '#1c2223' },
+    text: { primary: '#eef4f2', secondary: '#93a3a0' },
   },
 }
 

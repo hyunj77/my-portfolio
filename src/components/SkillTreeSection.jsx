@@ -11,7 +11,8 @@ import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import SectionHeader from './SectionHeader.jsx'
 import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { DEFAULT_SKILL_COLOR, categoryColors } from '../data/skillsData.js'
+import { useColorMode } from '../context/ColorModeContext.jsx'
+import { getCategoryColor } from '../data/skillsData.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const fadeInUp = keyframes`
@@ -21,6 +22,7 @@ const fadeInUp = keyframes`
 
 function SkillTreeSection() {
   const { homeData } = usePortfolio()
+  const { mode } = useColorMode()
   const [revealRef, isVisible] = useScrollReveal()
 
   return (
@@ -38,7 +40,7 @@ function SkillTreeSection() {
           sx={{ mt: 4, flexWrap: 'wrap', justifyContent: 'center' }}
         >
           {homeData.skills.map((skill, index) => {
-            const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
+            const color = getCategoryColor(skill.category, mode)
             return (
               <Grow key={skill.id} in={isVisible} timeout={400 + index * 100}>
                 <Stack spacing={{ xs: 0.5, md: 1 }} sx={{ width: { xs: 64, md: 84 }, alignItems: 'center' }}>
