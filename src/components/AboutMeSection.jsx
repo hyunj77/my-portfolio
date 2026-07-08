@@ -1,23 +1,14 @@
 import { useMemo } from 'react'
 import { Link as RouterLink } from 'react-router-dom'
-import { alpha, keyframes } from '@mui/material/styles'
-import Avatar from '@mui/material/Avatar'
+import { keyframes } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
 import Container from '@mui/material/Container'
-import Grid from '@mui/material/Grid'
-import Grow from '@mui/material/Grow'
 import Stack from '@mui/material/Stack'
-import Tooltip from '@mui/material/Tooltip'
 import Typography from '@mui/material/Typography'
-import PersonIcon from '@mui/icons-material/Person'
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded'
 import SectionHeader from './SectionHeader.jsx'
-import SkillIcon from './SkillIcon.jsx'
 import { usePortfolio } from '../context/PortfolioContext.jsx'
-import { DEFAULT_SKILL_COLOR, categoryColors } from '../data/skillsData.js'
 import { useScrollReveal } from '../hooks/useScrollReveal.js'
 
 const fadeInUp = keyframes`
@@ -43,115 +34,67 @@ function AboutMeSection() {
       >
         <SectionHeader title="About Me" light animate={isVisible} />
 
-        <Grid container spacing={3} sx={{ mt: 4 }}>
-          <Grid size={{ xs: 12, md: 7 }}>
-            <Card variant="outlined" sx={{ height: '100%', bgcolor: 'background.paper' }}>
-              <CardContent sx={{ p: { xs: 3, md: 4 } }}>
-                {mainContent && (
-                  <>
-                    <Typography sx={{ fontWeight: 700, color: 'text.primary', mb: 1 }}>{mainContent.title}</Typography>
-                    <Typography sx={{ color: 'text.secondary', lineHeight: 1.7 }}>{mainContent.summary}</Typography>
-                  </>
-                )}
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid size={{ xs: 12, md: 5 }}>
-            <Card variant="outlined" sx={{ height: '100%', bgcolor: 'background.paper' }}>
-              <CardContent
-                sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  p: { xs: 3, md: 4 },
-                  textAlign: 'center',
-                }}
-              >
-                <Avatar
-                  role="img"
-                  aria-label="프로필 사진"
-                  sx={{ width: 72, height: 72, mx: 'auto', mb: 1.5, bgcolor: 'primary.light' }}
-                >
-                  <PersonIcon sx={{ fontSize: '2.25rem', color: 'primary.dark' }} aria-hidden="true" />
-                </Avatar>
-                <Typography sx={{ fontWeight: 700, color: 'text.primary' }}>{basicInfo.name}</Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-
-        <Card variant="outlined" sx={{ mt: 3, bgcolor: 'background.paper' }}>
-          <CardContent sx={{ p: { xs: 1.5, md: 4 } }}>
-            <Stack direction="row" spacing={{ xs: 0.75, md: 3 }} useFlexGap sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
-              {skills.map((skill, index) => {
-                const color = categoryColors[skill.category] ?? DEFAULT_SKILL_COLOR
-                return (
-                  <Grow key={skill.id} in={isVisible} timeout={400 + index * 100}>
-                    <Stack spacing={{ xs: 0.4, md: 0.75 }} sx={{ width: { xs: 40, md: 72 }, alignItems: 'center' }}>
-                      <Tooltip title={skill.description} arrow placement="top">
-                        <Box
-                          tabIndex={0}
-                          sx={{
-                            width: { xs: 32, md: 44 },
-                            height: { xs: 32, md: 44 },
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            bgcolor: alpha(color, 0.12),
-                            willChange: 'transform, box-shadow',
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            outline: 'none',
-                            '@media (hover: hover)': {
-                              '&:hover': {
-                                transform: 'rotate(12deg) scale(1.12)',
-                                boxShadow: `0 0 0 6px ${alpha(color, 0.16)}, 0 0 18px ${alpha(color, 0.55)}`,
-                              },
-                            },
-                            '&:focus-visible': {
-                              transform: 'rotate(12deg) scale(1.12)',
-                              boxShadow: `0 0 0 6px ${alpha(color, 0.16)}, 0 0 18px ${alpha(color, 0.55)}`,
-                            },
-                          }}
-                        >
-                          <SkillIcon icon={skill.icon} color={color} sx={{ fontSize: { xs: 16, md: 22 } }} />
-                        </Box>
-                      </Tooltip>
-                      <Typography
-                        variant="caption"
-                        sx={{ fontWeight: 600, textAlign: 'center', fontSize: { xs: '0.68rem', md: '0.75rem' }, lineHeight: 1.2 }}
-                      >
-                        {skill.name}
-                      </Typography>
-                    </Stack>
-                  </Grow>
-                )
-              })}
+        <Box sx={{ mt: 6, display: 'flex', gap: { xs: 2.5, md: 4 } }}>
+          <Box sx={{ width: 3, flexShrink: 0, borderRadius: 2, bgcolor: 'rgba(255,255,255,0.5)' }} />
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Stack direction="row" spacing={1.5} alignItems="baseline" sx={{ mb: 2.5, flexWrap: 'wrap' }}>
+              <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: '1.1rem' }}>{basicInfo.name}</Typography>
+              {basicInfo.experience && (
+                <Typography sx={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.85rem' }}>{basicInfo.experience}</Typography>
+              )}
             </Stack>
-          </CardContent>
-        </Card>
 
-        <Box sx={{ textAlign: 'center', mt: 3 }}>
-          <Button
-            component={RouterLink}
-            to="/about"
-            variant="outlined"
-            endIcon={<ArrowForwardRoundedIcon />}
-            aria-label="About Me 탭에서 더 알아보기"
-            sx={{
-              color: '#fff',
-              borderColor: 'rgba(255,255,255,0.7)',
-              '&:hover': {
-                borderColor: '#fff',
-                bgcolor: 'rgba(255,255,255,0.12)',
-                boxShadow: '0 6px 22px rgba(255,255,255,0.55)',
-              },
-            }}
-          >
-            더 알아보기
-          </Button>
+            {mainContent && (
+              <>
+                <Typography
+                  sx={{
+                    color: 'rgba(255,255,255,0.75)',
+                    textTransform: 'uppercase',
+                    letterSpacing: 1.5,
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    mb: 1,
+                  }}
+                >
+                  {mainContent.title}
+                </Typography>
+                <Typography
+                  sx={{
+                    color: '#fff',
+                    fontWeight: 600,
+                    lineHeight: 1.7,
+                    mb: 3,
+                    fontSize: { xs: '1.05rem', md: '1.2rem' },
+                    maxWidth: 620,
+                  }}
+                >
+                  {mainContent.summary}
+                </Typography>
+              </>
+            )}
+
+            <Typography sx={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.88rem', mb: 3 }}>
+              {skills.map((skill) => skill.name).join('  /  ')}
+            </Typography>
+
+            <Button
+              component={RouterLink}
+              to="/about"
+              variant="text"
+              endIcon={<ArrowForwardRoundedIcon />}
+              aria-label="About Me 탭에서 더 알아보기"
+              sx={{
+                px: 0,
+                fontWeight: 700,
+                color: '#fff',
+                borderBottom: '1px solid rgba(255,255,255,0.6)',
+                borderRadius: 0,
+                '&:hover': { bgcolor: 'transparent', borderColor: '#fff' },
+              }}
+            >
+              더 알아보기
+            </Button>
+          </Box>
         </Box>
       </Container>
     </Box>

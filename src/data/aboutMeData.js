@@ -3,7 +3,7 @@ export const initialAboutMeData = {
     name: 'Hyunji Sun',
     education: '',
     major: '',
-    experience: '신입',
+    experience: '',
     photo: 'person',
   },
   sections: [
