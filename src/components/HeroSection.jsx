@@ -259,7 +259,6 @@ function HeroSection() {
                 component="h1"
                 aria-label={HEADLINE_FULL_TEXT}
                 sx={{
-                  fontFamily: '"Pretendard Variable", Pretendard, system-ui, sans-serif',
                   fontWeight: 800,
                   fontSize: { xs: '1.5rem', sm: '2rem', md: '2.7rem', lg: '3.1rem' },
                   lineHeight: 1.35,

@@ -27,7 +27,7 @@ const theme = createTheme({
     borderRadius: 14,
   },
   typography: {
-    fontFamily: 'system-ui, "Segoe UI", Roboto, sans-serif',
+    fontFamily: '"Pretendard Variable", Pretendard, system-ui, "Segoe UI", Roboto, sans-serif',
     h1: { fontWeight: 700 },
     h2: { fontWeight: 700 },
     h3: { fontWeight: 700 },
