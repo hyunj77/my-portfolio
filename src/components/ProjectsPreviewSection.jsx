@@ -47,6 +47,11 @@ function ProjectsPreviewSection() {
     let cancelled = false
 
     async function fetchProjects() {
+      if (!supabase) {
+        if (!cancelled) setStatus('error')
+        return
+      }
+
       const { data, error, count: fetchedCount } = await supabase
         .from('projects')
         .select('id, title, description, thumbnail_url, detail_url', { count: 'exact' })

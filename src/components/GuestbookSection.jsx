@@ -63,6 +63,11 @@ function GuestbookSection() {
   )
 
   async function loadEntries() {
+    if (!supabase) {
+      setStatus('error')
+      return
+    }
+
     const { data, error: fetchError } = await supabase
       .from('portfolio_guestbook')
       .select('id, emoji, name, affiliation, message, created_at')
@@ -90,6 +95,12 @@ function GuestbookSection() {
 
     setSubmitting(true)
     setError('')
+
+    if (!supabase) {
+      setSubmitting(false)
+      setError('방명록 등록에 실패했습니다. 잠시 후 다시 시도해주세요.')
+      return
+    }
 
     const { error: insertError } = await supabase.from('portfolio_guestbook').insert({
       emoji: selectedEmoji,

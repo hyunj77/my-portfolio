@@ -34,6 +34,11 @@ function Projects() {
     let cancelled = false
 
     async function fetchProjects() {
+      if (!supabase) {
+        if (!cancelled) setStatus('error')
+        return
+      }
+
       const { data, error } = await supabase
         .from('projects')
         .select('*')
